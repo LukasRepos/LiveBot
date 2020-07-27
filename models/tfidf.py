@@ -128,13 +128,10 @@ if __name__ == "__main__":
     pd.set_option('display.width', 1000)
 
     tfidf = TfIdf()
-    doc1 = "Hello"
-    doc2 = "Hi there"
-    tfidf.submit_document(doc1, "welcome")
-    tfidf.submit_document(doc2, "welcome")
+    tfidf.submit_document("Hello", "welcome")
+    tfidf.submit_document("Hi there", "welcome")
     tfidf.submit_document("Goodbye", "Goodbyes")
 
     tfidf.fit()
-    print(tfidf)
-
-    print(tfidf.classify_document(input("> ")))
+    while True:
+        print(tfidf.classify_document(input("> ")))
