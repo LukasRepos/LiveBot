@@ -1,0 +1,16 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Hi"
+      ],
+      "classification": "welcome"
+    },
+    {
+      "patterns": [
+        "Bye"
+      ],
+      "classification": "goodbyes"
+    }
+  ]
+}
