@@ -1,7 +1,10 @@
 import math
+import string
+
 import pandas as pd
 import numpy as np
-import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
 
 
 class TfIdf:
@@ -11,6 +14,8 @@ class TfIdf:
         self.df["__norm"] = 0
         self.df["__class"] = ""
 
+        self.ps = PorterStemmer()
+
     def submit_document(self, doc, _class):
         """
         Submites a document to the classifier
@@ -19,6 +24,9 @@ class TfIdf:
         :return: None
         """
         terms = self.__process_doc(doc)
+
+        if len(terms) == 0:
+            return
 
         for term in terms:
             if term not in self.df.columns:
@@ -56,6 +64,10 @@ class TfIdf:
         :return: A tuple of probability in [0, 1] and the class
         """
         tokens = self.__process_doc(doc)
+
+        if len(tokens) == 0:
+            return 1, "None"
+
         terms = [col for col in self.df.columns if not col.startswith("__")]
         sim_values = []
 
@@ -78,6 +90,14 @@ class TfIdf:
 
         return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"]
 
+    def save(self, path):
+        import fileSystem.fs
+        self.df.to_csv(path)
+
+    def load(self, path):
+        import fileSystem.fs
+        self.df = pd.read_csv(path)
+
     def __tfidf(self, term, doc):
         """
         Calculates the combined score
@@ -93,7 +113,9 @@ class TfIdf:
         Processes the document
         :return: Array of String
         """
-        return doc.lower().split()
+        tokens = [w for w in word_tokenize(doc.lower()) if w not in string.punctuation]
+        lemmatized_words = [self.ps.stem(t) for t in tokens]
+        return lemmatized_words
 
     def __tf(self, term, doc):
         """

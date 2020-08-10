@@ -11,6 +11,12 @@
         "Bye"
       ],
       "classification": "goodbyes"
+    },
+    {
+      "patterns": [
+        "Are you fine?"
+      ],
+      "classification": "something"
     }
   ]
 }

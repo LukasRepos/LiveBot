@@ -1,0 +1,27 @@
+<root>
+    <resource type="intents" name="__root__" filetype="json" source="./models/intents.json" />
+
+    <resource inline="" type="intents" name="__root__" class="something">
+        <data>How are you?</data>
+    </resource>
+
+    <resource inline="" type="responses" name="None">
+        <data>Didn't understand...</data>
+    </resource>
+
+    <resource inline="" type="responses" name="welcome">
+        <data>Hello!</data>
+        <data>Hi!</data>
+        <data>How are you?</data>
+    </resource>
+
+    <resource inline="" type="responses" name="something">
+        <data>I am fine, thank you!</data>
+    </resource>
+
+    <resource inline="" type="responses" name="goodbyes">
+        <data>Bye!</data>
+        <data>Goodbye!</data>
+        <data>Sad to see you go!</data>
+    </resource>
+</root>
