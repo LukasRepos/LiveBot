@@ -1,9 +1,11 @@
 # region imports
+from cognitive.cognition import CognitiveFunction
 from history.history import History
 # endregion
-from memory.memory import Memory
+from cognitive.memory.memory import Memory
 
-mem = Memory("./memory/memoryConfig.xml")
+"""
+mem = Memory("cognitive/memory/memoryConfig.xml")
 
 while True:
     inp = input("> ")
@@ -17,3 +19,16 @@ while True:
     result = mem.get_classifier().classify_document(inp)
     History.add_entry(result, inp)
     print(mem.remember())
+"""
+
+if __name__ == "__main__":
+    cognition = CognitiveFunction("./configuration/memoryConfig.xml")
+    while True:
+        inp = input("> ")
+
+        if inp == "quit":
+            break
+
+        print(cognition.process_language(inp))
+
+    cognition.shutdown()

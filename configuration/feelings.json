@@ -1,0 +1,10 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Are you fine?"
+      ],
+      "classification": "feelings"
+    }
+  ]
+}

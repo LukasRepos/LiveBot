@@ -11,9 +11,13 @@ def read(path):
 
 
 def write(path, data):
-    with open(path) as f:
+    with open(path, "a") as f:
         f.write(data)
 
 
-def getStream(path):
+def get_stream(path):
     return open(path)
+
+
+def close_stream(filestream):
+    filestream.close()

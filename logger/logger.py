@@ -1,13 +1,27 @@
 import termcolor
 
-
-def error(msg):
-    termcolor.cprint(f"[ERROR] {msg}", "red")
+from fileSystem import fs
 
 
-def warning(msg):
-    termcolor.cprint(f"[ERROR] {msg}", "yellow")
+redirect = False
 
 
-def log(msg):
-    termcolor.cprint(f"{msg}", "grey")
+def error(msg, to_file=False):
+    if to_file or redirect:
+        fs.write("./logger/log.txt", f"[ERROR] {msg}\n")
+    else:
+        termcolor.cprint(f"[ERROR] {msg}", "red")
+
+
+def warning(msg, to_file=False):
+    if to_file or redirect:
+        fs.write("./logger/log.txt", f"[WARNING] {msg}\n")
+    else:
+        termcolor.cprint(f"[WARNING] {msg}", "yellow")
+
+
+def log(msg, to_file=False):
+    if to_file or redirect:
+        fs.write("./logger/log.txt", msg)
+    else:
+        termcolor.cprint(f"{msg}\n", "grey")

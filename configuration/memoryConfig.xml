@@ -1,0 +1,26 @@
+<root>
+    <resource inline="" type="responses" name="None">
+        <data>Didn't understand...</data>
+        <data>Didn't understand what you said...</data>
+    </resource>
+    <resource type="classifier" source="./classifier.csv"/>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/welcomes.json" />
+    <resource inline="" type="responses" name="welcome">
+        <data>Hello!</data>
+        <data>Hi!</data>
+        <data>How are you?</data>
+    </resource>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/goodbyes.json" />
+    <resource inline="" type="responses" name="goodbyes">
+        <data>Bye!</data>
+        <data>Goodbye!</data>
+        <data>Sad to see you go!</data>
+    </resource>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/feelings.json" />
+    <resource inline="" type="responses" name="feelings">
+        <data>I am fine, thank you!</data>
+    </resource>
+</root>

@@ -1,0 +1,10 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Bye"
+      ],
+      "classification": "goodbyes"
+    }
+  ]
+}

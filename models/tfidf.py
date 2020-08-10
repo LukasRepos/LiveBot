@@ -96,7 +96,8 @@ class TfIdf:
 
     def load(self, path):
         import fileSystem.fs
-        self.df = pd.read_csv(path)
+        self.df = pd.read_csv(path, index_col=0)
+        print(self.df)
 
     def __tfidf(self, term, doc):
         """

@@ -1,0 +1,2 @@
+[ERROR] Invalid filetype in config file "jsona"
+[ERROR] Could not initialize! See error log for more details.
