@@ -2,7 +2,12 @@
   "docs": [
     {
       "patterns": [
-        "Bye"
+        "Bye!",
+        "Goodbye!",
+        "See you soon!",
+        "See you next time!",
+        "I need to go...",
+        "See you next time?"
       ],
       "classification": "goodbyes"
     }

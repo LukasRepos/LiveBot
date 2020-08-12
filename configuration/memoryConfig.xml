@@ -10,6 +10,7 @@
         <data>Hello!</data>
         <data>Hi!</data>
         <data>How are you?</data>
+        <data>Nice to see you!</data>
     </resource>
 
     <resource type="intents" name="language" filetype="json" source="./configuration/goodbyes.json" />
@@ -22,5 +23,22 @@
     <resource type="intents" name="language" filetype="json" source="./configuration/feelings.json" />
     <resource inline="" type="responses" name="feelings">
         <data>I am fine, thank you!</data>
+    </resource>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/living.json" />
+    <resource inline="" type="responses" name="living">
+        <data>My home is between this bits and bytes! This is the best home I could have asked for!</data>
+    </resource>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/name.json" />
+    <resource inline="" type="responses" name="name">
+        <data>You can call me Chatty!</data>
+        <data>My creator told me that I was Chatty!</data>
+        <data>My creator told me that my name was Chatty!</data>
+    </resource>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/fillers.json" />
+    <resource inline="" type="responses" name="fillers">
+        <data> </data>
     </resource>
 </root>

@@ -1,5 +1,6 @@
 import math
 import string
+import time
 
 import pandas as pd
 import numpy as np
@@ -28,6 +29,9 @@ class TfIdf:
         if len(terms) == 0:
             return
 
+        if " ".join(terms) in self.df.index.values:
+            return
+
         for term in terms:
             if term not in self.df.columns:
                 self.df[term] = 0
@@ -36,7 +40,7 @@ class TfIdf:
         for term in [col for col in self.df.columns if not col.startswith("__")]:
             doc_dict[term] = 0.0
         doc_dict["__class"] = _class
-        doc_series = pd.Series(doc_dict, name=doc)
+        doc_series = pd.Series(doc_dict, name=" ".join(self.__process_doc(doc)))
         self.df = self.df.append(doc_series)
 
     def fit(self):
@@ -49,7 +53,7 @@ class TfIdf:
         for doc in self.df.index.values:
             doc_dict = {}
             for term in terms:
-                doc_dict[term] = self.__tfidf(term, self.__process_doc(doc))
+                doc_dict[term] = self.__tfidf(term, doc.split())
 
             vec = np.array(list(doc_dict.values()))
             norm = np.linalg.norm(vec)
@@ -71,22 +75,23 @@ class TfIdf:
         terms = [col for col in self.df.columns if not col.startswith("__")]
         sim_values = []
 
+        b_vec = []
+        for term in terms:
+            b_vec.append(self.__tfidf(term, tokens))
+        b_vec = np.array(b_vec)
+        b_norm = np.linalg.norm(b_vec)
+
+        if b_norm == 0:
+            sim_values.append(-np.inf)
+            return -np.inf, self.df.iloc[0]["__class"]
+
         for doc in self.df.index.values:
             a_norm = self.df.loc[doc]["__norm"]
-            a_vec = np.array([self.df.loc[doc][t] for t in terms])
+            a_vec = self.df.loc[doc][terms]
 
-            b_vec = []
-            for term in terms:
-                b_vec.append(self.__tfidf(term, tokens))
-            b_vec = np.array(b_vec)
-            b_norm = np.linalg.norm(b_vec)
-
-            if b_norm == 0:
-                sim_values.append(-np.inf)
-            else:
-                dot = np.dot(a_vec, b_vec)
-                sim = dot / (a_norm * b_norm)
-                sim_values.append(sim)
+            dot = np.dot(a_vec, b_vec)
+            sim = dot / (a_norm * b_norm)
+            sim_values.append(sim)
 
         return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"]
 
@@ -97,7 +102,6 @@ class TfIdf:
     def load(self, path):
         import fileSystem.fs
         self.df = pd.read_csv(path, index_col=0)
-        print(self.df)
 
     def __tfidf(self, term, doc):
         """
@@ -106,7 +110,7 @@ class TfIdf:
         :param doc: Array of String
         :return: None
         """
-        corpus = [self.__process_doc(ind) for ind in self.df.index.values]
+        corpus = [ind.split() for ind in self.df.index.values]
         return self.__tf(term, doc) * self.__idf(term, corpus)
 
     def __process_doc(self, doc):

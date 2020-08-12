@@ -2,7 +2,20 @@
   "docs": [
     {
       "patterns": [
-        "Hi"
+        "Hi",
+        "Hello",
+        "Hey",
+        "Good morning",
+        "Good afternoon",
+        "Good evening",
+        "How it's going?",
+        "Nice to see you!",
+        "It's great to see you!",
+        "Good to see you!",
+        "Yo!",
+        "What’s up?",
+        "Sup",
+        "Heyyy"
       ],
       "classification": "welcome"
     }

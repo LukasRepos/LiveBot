@@ -1,0 +1,11 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Where do you live?",
+        "Are you happy where do you live?"
+      ],
+      "classification": "living"
+    }
+  ]
+}

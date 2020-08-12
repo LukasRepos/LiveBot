@@ -36,6 +36,7 @@ class Language:
 
     def read(self, doc):
         classify_results = self.classifier.classify_document(doc)
+        print(classify_results)
         self.history.appendleft({
             "input": doc,
             "probability": classify_results[0],

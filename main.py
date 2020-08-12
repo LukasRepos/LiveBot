@@ -1,8 +1,6 @@
 # region imports
 from cognitive.cognition import CognitiveFunction
-from history.history import History
 # endregion
-from cognitive.memory.memory import Memory
 
 """
 mem = Memory("cognitive/memory/memoryConfig.xml")
@@ -28,7 +26,9 @@ if __name__ == "__main__":
 
         if inp == "quit":
             break
-
-        print(cognition.process_language(inp))
+        elif inp == "##df":
+            print(cognition.language.classifier.df)
+        else:
+            print(cognition.process_language(inp))
 
     cognition.shutdown()
