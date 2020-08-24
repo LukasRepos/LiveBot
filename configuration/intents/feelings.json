@@ -1,0 +1,36 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Are you fine?",
+        "How are you?",
+        "Are you doing fine?",
+        "Its all fine?",
+        "Its all good?",
+        "I'm fine and you?",
+        "I am fine and you?",
+        "Hi, how are you?",
+        "Hey, how are you?",
+        "Hello, how are you?",
+        "Yo, how are you?",
+        "So, it is everything alright with you?"
+      ],
+      "classification": "feelings_01"
+    },
+    {
+      "patterns": [
+        "Are you really fine?"
+      ],
+      "classification": "feelings_02"
+    },
+    {
+      "patterns": [
+        "Do you have feelings?",
+        "Do you feel sentiments?",
+        "Do you feel things?",
+        "Do you have sentiments?"
+      ],
+      "classification": "feelings_03"
+    }
+  ]
+}

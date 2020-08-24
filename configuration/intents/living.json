@@ -3,7 +3,8 @@
     {
       "patterns": [
         "Where do you live?",
-        "Are you happy where do you live?"
+        "Are you happy where do you live?",
+        "Do you live in this computer?"
       ],
       "classification": "living"
     }

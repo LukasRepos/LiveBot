@@ -1,3 +1,4 @@
+import importlib
 import json
 import random
 import xml.etree.ElementTree as ElTree
@@ -7,7 +8,14 @@ import fileSystem.fs as fs
 import logger.logger as logger
 
 
-class Memory:
+def require(attrs, *argv):
+    for arg in argv:
+        if arg not in attrs:
+            return False
+    return True
+
+
+class Parser:
     def __init__(self, config_file):
         file = ElTree.parse(config_file)
         root = file.getroot()
@@ -16,23 +24,31 @@ class Memory:
         self.learning_word = ""
         self.error = False
 
-        for el in root:
-            if el.tag == "resource":
-                attr = el.keys()
+        relative_import = ""
 
-                if "type" in attr and "inline" in attr and "name" and el.get("type") == "responses":
-                    data = []
-                    for d in el:
-                        data.append(d.text)
-                    file_data["responses"][el.get("name")] = partial(random.choice, data)
-                elif "type" in attr and "source" in attr and el.get("type") == "classifier":
+        for el in root:
+            attr = el.keys()
+            if el.tag == "config":
+                if require(attr, "type", "source") and el.get("type") == "classifier":
                     file_data["modules"]["language"]["classifierPath"] = el.get("source")
-                elif "type" in attr and "inline" in attr and "class" in attr and el.get("type") == "intents":
+                elif require(attr, "type", "source") and el.get("type") == "scriptModule":
+                    relative_import = el.get("source")
+            elif el.tag == "resource":
+                if require(attr, "type", "inline", "name") and el.get("type") == "responses":
+                    if require(attr, "filetype", "source") and el.get("filetype") == "script":
+                        file_data["responses"][el.get("name")] = importlib.import_module(el.get("source"), relative_import).response
+                    else:
+                        data = []
+                        for d in el:
+                            data.append(d.text)
+                        file_data["responses"][el.get("name")] = partial(random.choice, data)
+                elif require(attr, "type", "name", "inline", "class") and el.get("type") == "intents":
                     patterns = []
                     for d in el:
                         patterns.append(d.text)
-                    file_data["models"][el.get("name")].append({"patterns": patterns, "classification": el.get("class")})
-                elif "type" in attr and "filetype" in attr and "source" in attr and "name" in attr and el.get("type") == "intents":
+                    file_data["models"][el.get("name")].append(
+                        {"patterns": patterns, "classification": el.get("class")})
+                elif require(attr, "type", "filetype", "source", "name") and el.get("type") == "intents":
                     if el.get("filetype") == "json":
                         filestream = fs.get_stream(el.get("source"))
                         file_data["models"][el.get("name")].extend(json.load(filestream)["docs"])
@@ -65,7 +81,3 @@ class Memory:
 
     def shutdown(self):
         pass
-
-
-if __name__ == "__main__":
-    mem = Memory("../../configuration/memoryConfig.xml")

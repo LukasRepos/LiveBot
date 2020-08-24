@@ -1,12 +1,12 @@
 from cognitive.language.lang import Language
-from cognitive.memory.memory import Memory
+from cognitive.parser.parser import Parser
 from logger import logger
 
 
 class CognitiveFunction:
-    def __init__(self, memConfig):
-        # initialize memory
-        self.memory = Memory(memConfig)
+    def __init__(self, parser_config):
+        # initialize parser
+        self.memory = Parser(parser_config)
 
         if self.memory.get_error():
             logger.error("Could not initialize! See error log for more details.")

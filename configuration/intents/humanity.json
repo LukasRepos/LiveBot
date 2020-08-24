@@ -1,0 +1,16 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "So you are really a computer?"
+      ],
+      "classification": "humanity_01"
+    },
+    {
+      "patterns": [
+        "Are you human?"
+      ],
+      "classification": "humanity_02"
+    }
+  ]
+}

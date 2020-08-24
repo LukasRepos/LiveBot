@@ -3,7 +3,8 @@
     {
       "patterns": [
         "Ok",
-        "Alright"
+        "Alright",
+        "Nice"
       ],
       "classification": "fillers"
     }

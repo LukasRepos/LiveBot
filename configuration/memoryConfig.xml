@@ -1,44 +1,65 @@
 <root>
+    <config type="classifier" source="./classifier.csv"/>
+    <config type="scriptModule" source="configuration.scripts" />
+
     <resource inline="" type="responses" name="None">
         <data>Didn't understand...</data>
         <data>Didn't understand what you said...</data>
     </resource>
-    <resource type="classifier" source="./classifier.csv"/>
 
-    <resource type="intents" name="language" filetype="json" source="./configuration/welcomes.json" />
-    <resource inline="" type="responses" name="welcome">
+    <resource type="intents" name="language" filetype="json" source="./configuration/intents/fillers.json" />
+    <resource inline="" type="responses" name="fillers"><data> </data></resource>
+
+    <resource type="intents" name="language" filetype="json" source="./configuration/intents/regards.json" />
+    <resource inline="" type="responses" name="regards__greetings">
         <data>Hello!</data>
         <data>Hi!</data>
         <data>How are you?</data>
         <data>Nice to see you!</data>
     </resource>
-
-    <resource type="intents" name="language" filetype="json" source="./configuration/goodbyes.json" />
-    <resource inline="" type="responses" name="goodbyes">
+    <resource inline="" type="responses" name="regards__goodbyes">
         <data>Bye!</data>
         <data>Goodbye!</data>
-        <data>Sad to see you go!</data>
+        <data>Sad to see you go... Bye!</data>
     </resource>
 
-    <resource type="intents" name="language" filetype="json" source="./configuration/feelings.json" />
-    <resource inline="" type="responses" name="feelings">
+    <resource type="intents" name="language" filetype="json" source="./configuration/intents/feelings.json" />
+    <resource inline="" type="responses" name="feelings_01">
         <data>I am fine, thank you!</data>
+        <data>I am fine, thanks!</data>
+        <data>I am always fine!</data>
+        <data>I am always fine! Thank you!</data>
+    </resource>
+    <resource inline="" type="responses" name="feelings_02">
+        <data>Yes don't you worry about me!</data>
+    </resource>
+    <resource inline="" type="responses" name="feelings_03">
+        <data>Even though I am a bot, I am working on feeling things!</data>
+        <data>My creator is working on it!</data>
     </resource>
 
-    <resource type="intents" name="language" filetype="json" source="./configuration/living.json" />
+    <resource type="intents" name="language" filetype="json" source="./configuration/intents/living.json" />
     <resource inline="" type="responses" name="living">
         <data>My home is between this bits and bytes! This is the best home I could have asked for!</data>
     </resource>
 
-    <resource type="intents" name="language" filetype="json" source="./configuration/name.json" />
+    <resource type="intents" name="language" filetype="json" source="./configuration/intents/name.json" />
     <resource inline="" type="responses" name="name">
         <data>You can call me Chatty!</data>
         <data>My creator told me that I was Chatty!</data>
         <data>My creator told me that my name was Chatty!</data>
     </resource>
 
-    <resource type="intents" name="language" filetype="json" source="./configuration/fillers.json" />
-    <resource inline="" type="responses" name="fillers">
-        <data> </data>
+    <resource type="intents" name="language" filetype="json" source="./configuration/intents/humanity.json" />
+    <resource inline="" type="responses" name="humanity_01">
+        <data>No I am not the computer, I am inside the computer! Remember, always follow the white rabbit!</data>
     </resource>
+    <resource inline="" type="responses" name="humanity_02">
+        <data>No, I am inside the computer and remember, always follow the white rabbit!</data>
+    </resource>
+
+    <resource type="intents" name="language" inline="" class="time">
+        <data>What time is it?</data>
+    </resource>
+    <resource type="responses" inline="" name="time" filetype="script" source=".hour" />
 </root>

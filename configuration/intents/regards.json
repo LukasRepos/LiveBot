@@ -17,7 +17,18 @@
         "Sup",
         "Heyyy"
       ],
-      "classification": "welcome"
+      "classification": "regards__greetings"
+    },
+    {
+      "patterns": [
+        "Bye!",
+        "Goodbye!",
+        "See you soon!",
+        "See you next time!",
+        "I need to go...",
+        "See you next time?"
+      ],
+      "classification": "regards__goodbyes"
     }
   ]
 }
