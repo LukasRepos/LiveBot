@@ -2,6 +2,8 @@ import xml.etree.ElementTree as ElTree
 
 from typing import List, Dict, KeysView
 
+from tqdm import tqdm
+
 
 class ParserRule:
     def __init__(self, requirements: List[str]):
@@ -23,7 +25,7 @@ class Parser:
         file = ElTree.parse(self.config_file)
         root = file.getroot()
 
-        for el in root:
+        for el in tqdm(root, desc="Loading configuration file"):
             attrs = el.keys()
             for rule in self.rules:
                 requirements = rule.get_requirements()

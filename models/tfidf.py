@@ -1,15 +1,18 @@
 import math
+import pathlib
 import string
-import time
+from typing import Tuple, List
 
-import pandas as pd
 import numpy as np
-from nltk.tokenize import word_tokenize
+import pandas as pd
 from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
+
+from fileSystem.filesystems import access_fs
 
 
 class TfIdf:
-    def __init__(self):
+    def __init__(self) -> None:
         self.df = pd.DataFrame()
         self.df.index.name = "__documents"
         self.df["__norm"] = 0
@@ -17,13 +20,7 @@ class TfIdf:
 
         self.ps = PorterStemmer()
 
-    def submit_document(self, doc, _class):
-        """
-        Submites a document to the classifier
-        :param doc: String
-        :param _class: String
-        :return: None
-        """
+    def submit_document(self, doc: str, _class: str) -> None:
         terms = self.__process_doc(doc)
 
         if len(terms) == 0:
@@ -43,11 +40,7 @@ class TfIdf:
         doc_series = pd.Series(doc_dict, name=" ".join(self.__process_doc(doc)))
         self.df = self.df.append(doc_series)
 
-    def fit(self):
-        """
-        Recalculates the entire dataframe values
-        :return: None
-        """
+    def fit(self) -> None:
         terms = [col for col in self.df.columns if not col.startswith("__")]
 
         for doc in self.df.index.values:
@@ -61,12 +54,7 @@ class TfIdf:
             doc_dict["__class"] = self.df.loc[doc]["__class"]
             self.df.loc[doc] = pd.Series(doc_dict)
 
-    def classify_document(self, doc):
-        """
-        Classifies a document
-        :param doc: String
-        :return: A tuple of probability in [0, 1] and the class
-        """
+    def classify_document(self, doc: str) -> Tuple[int, str]:
         tokens = self.__process_doc(doc)
 
         if len(tokens) == 0:
@@ -95,49 +83,25 @@ class TfIdf:
 
         return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"]
 
-    def save(self, path):
-        import fileSystem.fs
-        self.df.to_csv(path)
+    def save(self, path: str) -> None:
+        self.df.to_csv(access_fs("config").root / path)
 
-    def load(self, path):
-        import fileSystem.fs
-        self.df = pd.read_csv(path, index_col=0)
+    def load(self, path: str) -> None:
+        self.df = pd.read_csv(access_fs("config").root / path, index_col=0)
 
-    def __tfidf(self, term, doc):
-        """
-        Calculates the combined score
-        :param term: String
-        :param doc: Array of String
-        :return: None
-        """
+    def __tfidf(self, term: str, doc: List[str]) -> float:
         corpus = [ind.split() for ind in self.df.index.values]
         return self.__tf(term, doc) * self.__idf(term, corpus)
 
-    def __process_doc(self, doc):
-        """
-        Processes the document
-        :return: Array of String
-        """
+    def __process_doc(self, doc: str) -> List[str]:
         tokens = [w for w in word_tokenize(doc.lower()) if w not in string.punctuation]
         lemmatized_words = [self.ps.stem(t) for t in tokens]
         return lemmatized_words
 
-    def __tf(self, term, doc):
-        """
-        Returns the TF classification for a given term
-        :param term: String
-        :param doc: Array of String
-        :return: Float
-        """
+    def __tf(self, term: str, doc: List[str]) -> float:
         return doc.count(term) / len(doc)
 
-    def __idf(self, term, corpus):
-        """
-        Calculates the IDF classification of a term in a corpus
-        :param term: String
-        :param corpus: Array of Documents
-        :return: Float
-        """
+    def __idf(self, term: str, corpus: List[str]) -> float:
         nt = 0
         for doc in corpus:
             if term in doc:
@@ -145,7 +109,7 @@ class TfIdf:
 
         return math.log(len(corpus) / nt, 10)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.df.head())
 
 

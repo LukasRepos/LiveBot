@@ -3,6 +3,9 @@ from collections import deque
 from functools import partial
 from typing import List, Dict
 
+from tqdm import tqdm
+
+from fileSystem.filesystems import access_fs
 from logger import logger
 from models.sentrecon import recognize_sentiment
 from models.tfidf import TfIdf
@@ -20,10 +23,11 @@ class Language:
 
         path = paths["classifier"]
 
-        if os.path.isfile(path):
+        if os.path.isfile(access_fs("config").root / path):
+            print("Loading classifier data")
             self.classifier.load(path)
         else:
-            for classification, patterns in intents.items():
+            for classification, patterns in tqdm(intents.items(), desc="Loading classifier"):
                 for pattern in patterns:
                     self.classifier.submit_document(pattern, classification)
             self.classifier.fit()
@@ -32,10 +36,10 @@ class Language:
         self.learning_mode = False
         self.learning_document = None
 
-    def get_error(self):
+    def get_error(self) -> bool:
         return self.error
 
-    def read(self, doc: str):
+    def read(self, doc: str) -> str:
         classify_results = self.classifier.classify_document(doc)
         self.history.appendleft({
             "input": doc,
@@ -65,5 +69,5 @@ class Language:
             logger.warning("Classification not found!")
             return self.responses["None"]()
 
-    def shutdown(self):
+    def shutdown(self) -> None:
         self.classifier.save("./classifier.csv")

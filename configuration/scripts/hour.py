@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def response():
+def response() -> str:
     time = datetime.today()
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]

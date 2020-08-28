@@ -1,9 +1,11 @@
+from typing import Dict
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 analyser = SentimentIntensityAnalyzer()
 
 
-def recognize_sentiment(doc):
+def recognize_sentiment(doc: str) -> Dict[str, float]:
     return analyser.polarity_scores(doc)
 
 

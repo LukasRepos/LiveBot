@@ -7,8 +7,6 @@ if __name__ == "__main__":
 
         if inp == "quit":
             break
-        elif inp == "##df":
-            print(cognition.language.classifier.df)
         else:
             print(cognition.process_language(inp))
 
