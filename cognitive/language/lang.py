@@ -45,7 +45,8 @@ class Language:
             "input": doc,
             "probability": classify_results[0],
             "classification": classify_results[1],
-            "sentiment": recognize_sentiment(doc)
+            "sentiment": recognize_sentiment(doc),
+            "current_sent_value": ((self.history[0]["sentiment"]["compound"] if len(self.history) > 0 else 0) + recognize_sentiment(doc)["compound"]) / 2
         })
 
         if len(self.history) > self.MAX_QUEUE_SIZE:
@@ -64,7 +65,7 @@ class Language:
             return f"Is it {classify_results[1]}"
 
         if classify_results[1] in self.responses:
-            return self.responses[classify_results[1]]()
+            return self.responses[classify_results[1]](self.history, doc, classify_results[2])
         else:
             logger.warning("Classification not found!")
             return self.responses["None"]()

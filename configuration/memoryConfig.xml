@@ -62,5 +62,30 @@
     <resource type="intents" inline="TRUE" name="time">
         <data>What time is it?</data>
     </resource>
-    <resource type="responses" name="time" source=".hour" />
+    <resource type="responses" name="time" source=".hour" function="response" />
+
+    <resource type="intents" inline="TRUE" name="wikipedia_generator">
+        <data>Generate information about</data>
+        <data>Generate info about</data>
+        <data>Search about</data>
+        <data>Search for</data>
+        <data>Find information about</data>
+        <data>Find info about</data>
+        <data>Gather information about</data>
+        <data>Gather info about</data>
+    </resource>
+    <resource type="responses" name="wikipedia_generator" source=".wikigen" function="response" />
+
+    <resource type="intents" inline="TRUE" name="calendar_debug">
+        <data>Debug calendar</data>
+    </resource>
+    <resource type="responses" name="calendar_debug" source=".calendar" function="debug" />
+    <resource type="intents" inline="TRUE" name="calendar_add">
+        <data>Add an appointment to tomorrow.</data>
+    </resource>
+    <resource type="responses" name="calendar_add" source=".calendar" function="add_tomorrow" />
+    <resource type="intents" inline="TRUE" name="calendar_get">
+        <data>What do I have tomorrow?</data>
+    </resource>
+    <resource type="responses" name="calendar_get" source=".calendar" function="get_tomorrow" />
 </root>

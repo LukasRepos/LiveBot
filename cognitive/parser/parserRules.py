@@ -27,7 +27,7 @@ class InlineReponsesRule(ParserRule):
 
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "responses":
-            self.responses[attributes["name"]] = partial(random.choice, data)
+            self.responses[attributes["name"]] = lambda hist, doc, reference: partial(random.choice, data)()
 
     def get_responses(self) -> Dict[str, partial]:
         return self.responses
@@ -35,16 +35,16 @@ class InlineReponsesRule(ParserRule):
 
 class ExternalScriptRule(ParserRule):
     def __init__(self):
-        super().__init__(["type", "name", "source"])
+        super().__init__(["type", "name", "source", "function"])
         self.responses = {}
 
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "resource" and attributes["type"] == "responses":
-            self.responses[attributes["name"]] = attributes["source"]
+            self.responses[attributes["name"]] = [attributes["source"], attributes["function"]]
 
     def get_responses(self, paths):
-        for name, source in self.responses.items():
-            self.responses[name] = importlib.import_module(source, paths["scriptModule"]).response
+        for name, [source, func] in self.responses.items():
+            self.responses[name] = getattr(importlib.import_module(source, paths["scriptModule"]), func)
         return self.responses
 
 

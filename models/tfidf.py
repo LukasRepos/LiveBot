@@ -54,7 +54,7 @@ class TfIdf:
             doc_dict["__class"] = self.df.loc[doc]["__class"]
             self.df.loc[doc] = pd.Series(doc_dict)
 
-    def classify_document(self, doc: str) -> Tuple[int, str]:
+    def classify_document(self, doc: str) -> Tuple[int, str, str]:
         tokens = self.__process_doc(doc)
 
         if len(tokens) == 0:
@@ -71,7 +71,7 @@ class TfIdf:
 
         if b_norm == 0:
             sim_values.append(-np.inf)
-            return -np.inf, self.df.iloc[0]["__class"]
+            return -np.inf, self.df.iloc[0]["__class"], self.df.index.values[0]
 
         for doc in self.df.index.values:
             a_norm = self.df.loc[doc]["__norm"]
@@ -81,7 +81,7 @@ class TfIdf:
             sim = dot / (a_norm * b_norm)
             sim_values.append(sim)
 
-        return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"]
+        return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"], self.df.index.values[np.where(sim_values == np.amax(sim_values))[0][0]]
 
     def save(self, path: str) -> None:
         self.df.to_csv(access_fs("config").root / path)

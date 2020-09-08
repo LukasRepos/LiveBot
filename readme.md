@@ -39,22 +39,31 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <th>task</th>                                                       <th>status</th>
     </tr>
     <tr>
-        <td>Implement wikipedia text generation using Markov Chains</td>    <td>CURRENT DEVELOPEMENT</td>
+        <td>Implement wikipedia text generation using Markov Chains</td>    <td>DONE</td>
     </tr>
     <tr>
-        <td>Add the sentiments module</td>                                  <td>READY TO DEVELOP</td>
+        <td>Add the sentiments module</td>                                  <td>BASICS DONE</td>
     </tr>
     <tr>
-        <td>Calendar and note taking features</td>                          <td>READY TO DEVELOP</td>
+        <td>Calendar and note taking features</td>                          <td>BASICS DONE</td>
+    </tr>
+    <tr>
+        <td>Learn systems</td>                                              <td>READY TO DEVELOP</td>
     </tr>
     <tr>
         <td>Add hacker news API to return news</td>                         <td>ON HOLD</td>
     </tr>
     <tr>
-        <td>Add API capabilities</td>                                       <td>IN RESEARCH</td>
+        <td>Add API capabilities</td>                                       <td>ON HOLD</td>
     </tr>
     <tr>
         <td>Build knowledge graph from user information</td>                <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Build knowledge graph from wikipedia</td>                       <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Add proper learning</td>                                        <td>ON HOLD</td>
     </tr>
 </table>
 
@@ -62,9 +71,6 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
 <table>
     <tr>
         <th>task</th>                                                       <th>status</th>
-    </tr>
-    <tr>
-        <td>Improve code speed</td>                                         <td>TODO</td>
     </tr>
     <tr>
         <td>Add C addons</td>                                               <td>IN RESEARCH - UNCERTAIN</td>

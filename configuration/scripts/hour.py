@@ -1,7 +1,8 @@
+from collections import deque
 from datetime import datetime
 
 
-def response() -> str:
+def response(_: deque, __: str, ___: str) -> str:
     time = datetime.today()
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
