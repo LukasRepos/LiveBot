@@ -8,7 +8,9 @@
     </resource>
 
     <resource type="intents" filetype="json" source="./configuration/intents/fillers.json" />
-    <resource inline="TRUE" type="responses" name="fillers"><data> </data></resource>
+    <resource inline="TRUE" type="responses" name="fillers">
+        <data> </data>
+    </resource>
 
     <resource type="intents" filetype="json" source="./configuration/intents/regards.json" />
     <resource inline="TRUE" type="responses" name="regards__greetings">
@@ -80,12 +82,35 @@
         <data>Debug calendar</data>
     </resource>
     <resource type="responses" name="calendar_debug" source=".calendar" function="debug" />
-    <resource type="intents" inline="TRUE" name="calendar_add">
+    <resource type="intents" inline="TRUE" name="calendar_add_tomorrow">
         <data>Add an appointment to tomorrow.</data>
+        <data>Create an event for tomorrow.</data>
+        <data>Add an event to tomorrow.</data>
     </resource>
-    <resource type="responses" name="calendar_add" source=".calendar" function="add_tomorrow" />
-    <resource type="intents" inline="TRUE" name="calendar_get">
+    <resource type="responses" name="calendar_add_tomorrow" source=".calendar" function="add_tomorrow" />
+    <resource type="intents" inline="TRUE" name="calendar_add_date">
+        <data>Add an appointment to date</data>
+        <data>Add an event to date</data>
+        <data>Add an appointment to the date</data>
+        <data>Add an event to the date</data>
+    </resource>
+    <resource type="responses" name="calendar_add_date" source=".calendar" function="add_date" />
+    <resource type="intents" inline="TRUE" name="calendar_get_tomorrow">
         <data>What do I have tomorrow?</data>
+        <data>What is in my agenda for tomorrow?</data>
     </resource>
-    <resource type="responses" name="calendar_get" source=".calendar" function="get_tomorrow" />
+    <resource type="responses" name="calendar_get_tomorrow" source=".calendar" function="get_tomorrow" />
+    <resource type="intents" inline="TRUE" name="calendar_get_date">
+        <data>What is in my agenda for the date</data>
+        <data>What is in my agenda at</data>
+    </resource>
+    <resource type="responses" name="calendar_get_date" source=".calendar" function="get_date" />
+    <resource type="intents" inline="TRUE" name="calendar_add_weekday">
+        <data>Add an event at</data>
+    </resource>
+    <resource type="responses" name="calendar_add_weekday" source=".calendar" function="add_recurrent" />
+    <resource type="intents" inline="TRUE" name="calendar_get_weekday">
+        <data>What do I have at the</data>
+    </resource>
+    <resource type="responses" name="calendar_get_weekday" source=".calendar" function="get_recurrent" />
 </root>

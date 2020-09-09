@@ -17,6 +17,7 @@ class TfIdf:
         self.df.index.name = "__documents"
         self.df["__norm"] = 0
         self.df["__class"] = ""
+        self.df["__original"] = ""
 
         self.ps = PorterStemmer()
 
@@ -37,6 +38,7 @@ class TfIdf:
         for term in [col for col in self.df.columns if not col.startswith("__")]:
             doc_dict[term] = 0.0
         doc_dict["__class"] = _class
+        doc_dict["__original"] = doc
         doc_series = pd.Series(doc_dict, name=" ".join(self.__process_doc(doc)))
         self.df = self.df.append(doc_series)
 
@@ -52,13 +54,14 @@ class TfIdf:
             norm = np.linalg.norm(vec)
             doc_dict["__norm"] = norm
             doc_dict["__class"] = self.df.loc[doc]["__class"]
+            doc_dict["__original"] = self.df.loc[doc]["__original"]
             self.df.loc[doc] = pd.Series(doc_dict)
 
     def classify_document(self, doc: str) -> Tuple[int, str, str]:
         tokens = self.__process_doc(doc)
 
         if len(tokens) == 0:
-            return 1, "None"
+            return 1, "None", "None"
 
         terms = [col for col in self.df.columns if not col.startswith("__")]
         sim_values = []
@@ -80,8 +83,7 @@ class TfIdf:
             dot = np.dot(a_vec, b_vec)
             sim = dot / (a_norm * b_norm)
             sim_values.append(sim)
-
-        return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"], self.df.index.values[np.where(sim_values == np.amax(sim_values))[0][0]]
+        return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"], self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__original"]
 
     def save(self, path: str) -> None:
         self.df.to_csv(access_fs("config").root / path)

@@ -5,16 +5,88 @@ import datetime
 import nltk
 
 agenda = {}
+recurrent_events = {i: [] for i in range(7)}
+
+
+def add_date(_: deque, doc: str, ref: str) -> str:
+    appointments = " ".join(nltk.sent_tokenize(doc)[1:])
+
+    reference = ref.lower()
+    document = nltk.sent_tokenize(doc)[0].lower()
+    if reference in document:
+        date_string = document.split(reference)[1]
+    else:
+        return "Cannot understand the date :("
+
+    patterns = [
+        " %d %B, %Y.",    # 21 June, 2018
+        " %d/%m/%Y.",     # 12/11/2018
+        " %m/%d/%Y."      # 12/30/2018
+    ]
+
+    due_date = None
+    for pattern in patterns:
+        try:
+            due_date = datetime.datetime.strptime(date_string, pattern)
+            break
+        except:
+            continue
+
+    if due_date is None:
+        return "Date unknown... :("
+
+    timestamp = calendar.timegm(due_date.timetuple())
+
+    if timestamp not in agenda:
+        agenda[timestamp] = []
+    agenda[timestamp].append(appointments)
+
+    return "Done sir"
+
+
+def get_date(_: deque, doc: str, ref: str) -> str:
+    reference = ref.lower()
+    document = nltk.sent_tokenize(doc)[0].lower()
+    if reference in document:
+        date_string = document.split(reference)[1]
+    else:
+        return "Cannot understand the date :("
+
+    patterns = [
+        " %d %B, %Y.",    # 21 June, 2018
+        " %d/%m/%Y.",     # 12/11/2018
+        " %m/%d/%Y."      # 12/30/2018
+    ]
+
+    due_date = None
+    for pattern in patterns:
+        try:
+            due_date = datetime.datetime.strptime(date_string, pattern)
+            break
+        except:
+            continue
+
+    if due_date is None:
+        return "Date unknown... :("
+
+    timestamp = calendar.timegm(due_date.timetuple())
+    if timestamp not in agenda:
+        return "Nothing! :D"
+
+    msg = f"You have {len(agenda[timestamp])} things for tomorrow:"
+    for appointment in agenda[timestamp]:
+        msg += f"\n -> {appointment}"
+    return msg
 
 
 def add_tomorrow(_: deque, doc: str, ___: str) -> str:
-    appointment = " ".join(nltk.sent_tokenize(doc)[1:])
+    appointments = " ".join(nltk.sent_tokenize(doc)[1:])
     due_date = datetime.datetime.today().date() + datetime.timedelta(days=1)
     timestamp = calendar.timegm(due_date.timetuple())
 
     if timestamp not in agenda:
         agenda[timestamp] = []
-    agenda[timestamp].append(appointment)
+    agenda[timestamp].append(appointments)
 
     return "Done sir!"
 
@@ -22,12 +94,71 @@ def add_tomorrow(_: deque, doc: str, ___: str) -> str:
 def get_tomorrow(_: deque, __: str, ___: str) -> str:
     due_date = datetime.datetime.today().date() + datetime.timedelta(days=1)
     timestamp = calendar.timegm(due_date.timetuple())
+
+    msg = "Nothing! :D"
+    count = len(recurrent_events[due_date.weekday()])
     if timestamp in agenda:
-        msg = f"You have {len(agenda[timestamp])} things for tomorrow:"
+        count += len(agenda[timestamp])
+    if timestamp in agenda or len(recurrent_events[due_date.weekday()]) > 0:
+        msg = f"You have {count} things for tomorrow:"
+
+    if timestamp in agenda:
         for appointment in agenda[timestamp]:
             msg += f"\n -> {appointment}"
+    if len(recurrent_events[due_date.weekday()]) > 0:
+        for appointment in recurrent_events[due_date.weekday()]:
+            msg += f"\n -> {appointment}"
+    return msg
+
+
+def add_recurrent(_: deque, doc: str, ref: str) -> str:
+    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    appointments = " ".join(nltk.sent_tokenize(doc)[1:])
+
+    reference = ref.lower()
+    document = nltk.sent_tokenize(doc)[0].lower()
+    flag = False
+    index = -1
+    if reference in document:
+        for i, weekday in enumerate(weekdays):
+            if weekday in document:
+                flag = True
+                index = i
+    else:
+        return "Cannot understand the date :("
+
+    if not flag:
+        return "Cannot understand weekday :("
+
+    recurrent_events[index].append(appointments)
+    return "Done sir!"
+
+
+def get_recurrent(_: deque, doc: str, ref: str) -> str:
+    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+    reference = ref.lower()
+    document = nltk.sent_tokenize(doc)[0].lower()
+    flag = False
+    index = -1
+    if reference in document:
+        for i, weekday in enumerate(weekdays):
+            if weekday in document:
+                flag = True
+                index = i
+    else:
+        return "Cannot understand the date :("
+
+    if not flag:
+        return "Cannot understand weekday :("
+
+    if len(recurrent_events[index]) == 0:
+        return "Nothing sir! :D"
+    else:
+        msg = f"You have {len(recurrent_events[index])} things for {weekdays[index]}:"
+        for appointment in recurrent_events[index]:
+            msg += f"\n -> {appointment}"
         return msg
-    return "Nothing!"
 
 
 def debug(_: deque, __: str, ___: str) -> str:

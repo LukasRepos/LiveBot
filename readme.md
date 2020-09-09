@@ -45,7 +45,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Add the sentiments module</td>                                  <td>BASICS DONE</td>
     </tr>
     <tr>
-        <td>Calendar and note taking features</td>                          <td>BASICS DONE</td>
+        <td>Calendar and note taking features</td>                          <td>DONE</td>
     </tr>
     <tr>
         <td>Learn systems</td>                                              <td>READY TO DEVELOP</td>
