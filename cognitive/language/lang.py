@@ -1,10 +1,12 @@
 import os
 from collections import deque
 from functools import partial
+import random
 from typing import List, Dict
 
 from tqdm import tqdm
 
+from cognitive.learn.learning import LearnModule
 from fileSystem.filesystems import access_fs
 from logger import logger
 from models.sentrecon import recognize_sentiment
@@ -33,8 +35,8 @@ class Language:
             self.classifier.fit()
 
         self.error = False
-        self.learning_mode = False
-        self.learning_document = None
+
+        self.learning_module = LearnModule()
 
     def get_error(self) -> bool:
         return self.error
@@ -52,23 +54,22 @@ class Language:
         if len(self.history) > self.MAX_QUEUE_SIZE:
             self.history.pop()
 
-        if self.learning_mode:
-            if doc in self.responses.keys():
-                self.classifier.submit_document(self.learning_document, doc)
-                self.classifier.fit()
-            self.learning_mode = False
-            return "Learned a new thing!"
+        # learning
+        if self.learning_module.is_learning():
+            response = self.learning_module.learn(doc)
+            if done := self.learning_module.done():
+                self.responses[done[0]] = lambda hist, doc, reference: partial(random.choice, done[1])()
+            return response
 
         if classify_results[0] < self.recon_threshold:
-            self.learning_mode = True
-            self.learning_document = doc
-            return f"Is it {classify_results[1]}"
+            self.learning_module.new_round(self.history.copy(), self.classifier, list(self.responses.keys()))
+            return self.learning_module.ask()
 
         if classify_results[1] in self.responses:
             return self.responses[classify_results[1]](self.history, doc, classify_results[2])
         else:
             logger.warning("Classification not found!")
-            return self.responses["None"]()
+            return self.responses["None"](self.history, doc, classify_results[2])
 
     def shutdown(self) -> None:
         self.classifier.save("./classifier.csv")

@@ -3,8 +3,7 @@
     <path type="scriptModule" source="configuration.scripts" />
 
     <resource inline="TRUE" type="responses" name="None">
-        <data>Didn't understand...</data>
-        <data>Didn't understand what you said...</data>
+        <data>Don't know what to say...</data>
     </resource>
 
     <resource type="intents" filetype="json" source="./configuration/intents/fillers.json" />
