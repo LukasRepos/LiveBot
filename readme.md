@@ -48,7 +48,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Calendar and note taking features</td>                          <td>DONE</td>
     </tr>
     <tr>
-        <td>Learn systems</td>                                              <td>READY TO DEVELOP</td>
+        <td>Learn systems</td>                                              <td>DONE</td>
     </tr>
     <tr>
         <td>Add hacker news API to return news</td>                         <td>ON HOLD</td>

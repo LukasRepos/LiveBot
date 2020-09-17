@@ -1,8 +1,9 @@
 import importlib
 import json
 import random
+from collections import deque
 from functools import partial
-from typing import Dict, List
+from typing import Dict, List, Callable
 
 from cognitive.parser.parser import ParserRule
 
@@ -29,7 +30,7 @@ class InlineReponsesRule(ParserRule):
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "responses":
             self.responses[attributes["name"]] = lambda hist, doc, reference: partial(random.choice, data)()
 
-    def get_responses(self) -> Dict[str, partial]:
+    def get_responses(self) -> Dict[str, Callable[[deque, str, str], str]]:
         return self.responses
 
 

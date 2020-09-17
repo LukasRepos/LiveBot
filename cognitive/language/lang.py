@@ -2,7 +2,7 @@ import os
 from collections import deque
 from functools import partial
 import random
-from typing import List, Dict
+from typing import List, Dict, Callable
 
 from tqdm import tqdm
 
@@ -14,7 +14,7 @@ from models.tfidf import TfIdf
 
 
 class Language:
-    def __init__(self, paths: Dict[str, str], responses: Dict[str, partial], intents: Dict[str, List[str]]):
+    def __init__(self, paths: Dict[str, str], responses: Dict[str, Callable[[deque, str, str], str]], intents: Dict[str, List[str]]):
         self.recon_threshold = 0.75
         self.MAX_QUEUE_SIZE = 100
 

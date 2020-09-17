@@ -39,7 +39,7 @@ class LearnModule(object):
         return self.learn_responses(doc)
 
     def ask(self) -> str:
-        msg = "Type in the classification I have the following classifications as an example!"
+        msg = "Type in the classification! I have the following classifications as an example!"
         for class_ in self.classes:
             msg += f"\n{class_}"
         return msg

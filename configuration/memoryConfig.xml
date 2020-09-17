@@ -112,4 +112,15 @@
         <data>What do I have at the</data>
     </resource>
     <resource type="responses" name="calendar_get_weekday" source=".calendar" function="get_recurrent" />
+
+    <resource type="intents" inline="TRUE" name="hackernews_recent">
+        <data>What is the most recent new?</data>
+        <data>What are the most recent news?</data>
+    </resource>
+    <resource type="responses" name="hackernews_recent" source=".news" function="most_recent" />
+    <resource type="intents" inline="TRUE" name="hackernews_hottest">
+        <data>What is the hottest new?</data>
+        <data>What are the hottest news?</data>
+    </resource>
+    <resource type="responses" name="hackernews_hottest" source=".news" function="get_hottest" />
 </root>
