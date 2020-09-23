@@ -1,7 +1,6 @@
 import termcolor
 
-from fileSystem import fs
-
+from Chatty.fileSystem import fs
 
 redirect = False
 

@@ -4,6 +4,8 @@ from typing import List, Dict, KeysView
 
 from tqdm import tqdm
 
+import Chatty.fileSystem.filesystems as fss
+
 
 class ParserRule:
     def __init__(self, requirements: List[str]):
@@ -17,12 +19,11 @@ class ParserRule:
 
 
 class Parser:
-    def __init__(self, config_file: str) -> None:
+    def __init__(self) -> None:
         self.rules = []
-        self.config_file = config_file
 
     def parse(self) -> None:
-        file = ElTree.parse(self.config_file)
+        file = ElTree.parse(fss.access_fs("config").root)
         root = file.getroot()
 
         for el in tqdm(root, desc="Loading configuration file"):

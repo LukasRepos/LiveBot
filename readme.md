@@ -51,10 +51,10 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Learn systems</td>                                              <td>DONE</td>
     </tr>
     <tr>
-        <td>Add hacker news API to return news</td>                         <td>ON HOLD</td>
+        <td>Add hacker news API to return news</td>                         <td>DONE</td>
     </tr>
     <tr>
-        <td>Add API capabilities</td>                                       <td>ON HOLD</td>
+        <td>Rewrite save system to be accessible systemwide(using SQL)</td> <td>DONE</td>
     </tr>
     <tr>
         <td>Build knowledge graph from user information</td>                <td>IN RESEARCH</td>

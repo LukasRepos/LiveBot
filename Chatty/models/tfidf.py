@@ -1,5 +1,4 @@
 import math
-import pathlib
 import string
 from typing import Tuple, List
 
@@ -8,7 +7,8 @@ import pandas as pd
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
-from fileSystem.filesystems import access_fs
+from Chatty.fileSystem.filesystems import access_fs
+from Chatty.saveState.saves import get_conn
 
 
 class TfIdf:
@@ -85,11 +85,11 @@ class TfIdf:
             sim_values.append(sim)
         return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"], self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__original"]
 
-    def save(self, path: str) -> None:
-        self.df.to_csv(access_fs("config").root / path)
+    def save(self) -> None:
+        get_conn().save_df("RESERVED_TFIDF", self.df, index=True)
 
-    def load(self, path: str) -> None:
-        self.df = pd.read_csv(access_fs("config").root / path, index_col=0)
+    def load(self) -> None:
+        self.df = get_conn().to_df("RESERVED_TFIDF", index="__documents")
 
     def __tfidf(self, term: str, doc: List[str]) -> float:
         corpus = [ind.split() for ind in self.df.index.values]

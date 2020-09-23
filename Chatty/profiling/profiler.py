@@ -1,5 +1,5 @@
 import cProfile
-from cognitive.cognition import CognitiveFunction
+from Chatty.cognitive.cognition import CognitiveFunction
 
 queries = [
     "Hi there",

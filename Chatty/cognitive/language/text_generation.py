@@ -1,8 +1,5 @@
 from random import choice
-from re import sub
-from typing import Union, List
-from  nltk.tokenize import word_tokenize
-import wikipedia
+from typing import Union, List, Dict
 
 chains = {}
 
@@ -10,7 +7,7 @@ chains = {}
 class Markov:
     def __init__(self, order=1):
         self.chain = {}
-        self.order = 1
+        self.order = order
 
     def train(self, tokens: List[str]) -> None:
         self.create_chain(tokens)
@@ -38,6 +35,9 @@ class Markov:
             res.append(choice(self.chain[res[len(res) - 1]]))
         return " ".join(res)
 
+    def load_from_chain(self, chain: Dict[str, str]) -> None:
+        self.chain = chain
+
 
 def add_chain(name: str, markov_chain: Markov) -> None:
     chains[name] = markov_chain
@@ -49,16 +49,3 @@ def get_chain(name: str) -> Union[Markov, None]:
 
 def chain_exists(name: str) -> bool:
     return name in chains.keys()
-
-
-if __name__ == "__main__":
-    markov = Markov(order=15)
-    corpus = wikipedia.page("Alan Turing").content
-    corpus = sub(r"={2,3}.*={2,3}", "", corpus)
-    corpus = sub(r"\(.*\)", "", corpus)
-    corpus = sub(r"\".*\"", "", corpus)
-    corpus = sub(r"`.*`", "", corpus)
-    corpus = sub(r"{.*}", "", corpus)
-    corpus = corpus.replace("\n", "")
-    markov.train(word_tokenize(corpus))
-    print(markov.generate(choice(list(markov.chain.keys())), iterations=100))

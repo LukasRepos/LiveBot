@@ -1,11 +1,14 @@
 import importlib
 import json
+import pathlib
 import random
 from collections import deque
 from functools import partial
 from typing import Dict, List, Callable
 
-from cognitive.parser.parser import ParserRule
+from Chatty.cognitive.parser.parser import ParserRule
+from Chatty.fileSystem.fs import FileSystem
+from Chatty.fileSystem.filesystems import add_filesystem, access_fs
 
 
 class PathRule(ParserRule):
@@ -16,6 +19,8 @@ class PathRule(ParserRule):
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "path":
             self.configs[attributes["type"]] = attributes["source"]
+            fs = FileSystem(access_fs("base").root / pathlib.PurePath(attributes["source"]))
+            add_filesystem(attributes["type"], fs)
 
     def get_configs(self) -> Dict[str, str]:
         return self.configs
@@ -45,7 +50,7 @@ class ExternalScriptRule(ParserRule):
 
     def get_responses(self, paths):
         for name, [source, func] in self.responses.items():
-            self.responses[name] = getattr(importlib.import_module(source, paths["scriptModule"]), func)
+            self.responses[name] = getattr(importlib.import_module(source, paths["scriptsModule"]), func)
         return self.responses
 
 

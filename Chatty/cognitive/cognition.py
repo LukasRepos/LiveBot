@@ -1,16 +1,19 @@
-from cognitive.language.lang import Language
-from cognitive.parser.parser import Parser
-from cognitive.parser.parserRules import PathRule, InlineReponsesRule, ExternalScriptRule, ExternalIntentRule, InternalIntentRule
+from Chatty.cognitive.language.lang import Language
+from Chatty.cognitive.parser.parser import Parser
+from Chatty.cognitive.parser.parserRules import PathRule, InlineReponsesRule, ExternalScriptRule, ExternalIntentRule, InternalIntentRule
 
 import pathlib
 
-from fileSystem.filesystems import add_filesystem
-from fileSystem.fs import FileSystem
+from Chatty.fileSystem.filesystems import add_filesystem
+from Chatty.fileSystem.fs import FileSystem
+from Chatty.saveState.saves import get_conn
 
 
 class CognitiveFunction:
-    def __init__(self, parser_config: str) -> None:
-        add_filesystem("config", FileSystem(pathlib.PurePath(parser_config).parent))
+    def __init__(self, parser_config: str, str_base_path: str) -> None:
+        base_path = "../" / pathlib.PurePath(str_base_path)
+        add_filesystem("base", FileSystem(base_path))
+        add_filesystem("config", FileSystem(base_path / pathlib.PurePath(parser_config)))
 
         # initialize rules
         path_rule = PathRule()
@@ -22,7 +25,7 @@ class CognitiveFunction:
         internal_intents_rule = InternalIntentRule()
 
         # initialize parser
-        self.parser = Parser(parser_config)
+        self.parser = Parser()
 
         # add the rules
         self.parser.add_rule(path_rule)
@@ -41,7 +44,7 @@ class CognitiveFunction:
         responses = {**inline_responses_rule.get_responses(), **external_scripts_rule.get_responses(path_configs)}
         intents = {**external_intents_rule.get_intents(), **internal_intents_rule.get_intents()}
 
-        self.language_module = Language(path_configs, responses, intents)
+        self.language_module = Language(responses, intents)
 
     def process_language(self, doc: str) -> str:
         return self.language_module.read(doc)
@@ -49,3 +52,4 @@ class CognitiveFunction:
     def shutdown(self) -> None:
         self.language_module.shutdown()
         self.parser.shutdown()
+        get_conn().shutdown()

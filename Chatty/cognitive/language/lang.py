@@ -6,15 +6,16 @@ from typing import List, Dict, Callable
 
 from tqdm import tqdm
 
-from cognitive.learn.learning import LearnModule
-from fileSystem.filesystems import access_fs
-from logger import logger
-from models.sentrecon import recognize_sentiment
-from models.tfidf import TfIdf
+from Chatty.cognitive.learn.learning import LearnModule
+from Chatty.fileSystem.filesystems import try_access_fs, access_fs
+from Chatty.logger import logger
+from Chatty.models.sentrecon import recognize_sentiment
+from Chatty.models.tfidf import TfIdf
+from Chatty.saveState.saves import initialize_conn
 
 
 class Language:
-    def __init__(self, paths: Dict[str, str], responses: Dict[str, Callable[[deque, str, str], str]], intents: Dict[str, List[str]]):
+    def __init__(self, responses: Dict[str, Callable[[deque, str, str], str]], intents: Dict[str, List[str]]):
         self.recon_threshold = 0.75
         self.MAX_QUEUE_SIZE = 100
 
@@ -23,12 +24,17 @@ class Language:
 
         self.responses = responses
 
-        path = paths["classifier"]
+        if try_access_fs("database") is not None and os.path.isfile(access_fs("database").root):
+            print("Loading memory")
 
-        if os.path.isfile(access_fs("config").root / path):
-            print("Loading classifier data")
-            self.classifier.load(path)
+            # initalizes the database
+            initialize_conn()
+
+            self.classifier.load()
         else:
+            # initalizes the database
+            initialize_conn()
+
             for classification, patterns in tqdm(intents.items(), desc="Loading classifier"):
                 for pattern in patterns:
                     self.classifier.submit_document(pattern, classification)
@@ -72,4 +78,4 @@ class Language:
             return self.responses["None"](self.history, doc, classify_results[2])
 
     def shutdown(self) -> None:
-        self.classifier.save("./classifier.csv")
+        self.classifier.save()

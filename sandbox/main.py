@@ -1,7 +1,7 @@
-from cognitive.cognition import CognitiveFunction
+from Chatty.cognitive.cognition import CognitiveFunction
 
 if __name__ == "__main__":
-    cognition = CognitiveFunction("./configuration/memoryConfig.xml")
+    cognition = CognitiveFunction("./sandbox/configuration/memoryConfig.xml")
     while True:
         inp = input("> ")
 

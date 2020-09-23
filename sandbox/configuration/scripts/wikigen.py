@@ -5,7 +5,7 @@ from re import sub
 import wikipedia
 from nltk import word_tokenize
 
-from cognitive.language.text_generation import Markov, chain_exists, get_chain, add_chain
+from Chatty.cognitive.language.text_generation import Markov, chain_exists, get_chain, add_chain
 
 
 def response(_: deque, doc: str, reference: str) -> str:
