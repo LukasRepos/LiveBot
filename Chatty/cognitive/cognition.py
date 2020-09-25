@@ -8,9 +8,13 @@ from Chatty.fileSystem.filesystems import add_filesystem
 from Chatty.fileSystem.fs import FileSystem
 from Chatty.saveState.saves import get_conn
 
+import nest_asyncio
+
 
 class CognitiveFunction:
     def __init__(self, parser_config: str, str_base_path: str) -> None:
+        nest_asyncio.apply()
+
         base_path = "../" / pathlib.PurePath(str_base_path)
         add_filesystem("base", FileSystem(base_path))
         add_filesystem("config", FileSystem(base_path / pathlib.PurePath(parser_config)))

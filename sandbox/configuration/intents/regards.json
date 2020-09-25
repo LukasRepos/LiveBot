@@ -17,7 +17,7 @@
         "Sup",
         "Heyyy"
       ],
-      "classification": "regards__greetings"
+      "classification": "regards_greetings"
     },
     {
       "patterns": [
@@ -26,9 +26,12 @@
         "See you soon!",
         "See you next time!",
         "I need to go...",
-        "See you next time?"
+        "See you next time?",
+        "Got to go",
+        "Got to go...",
+        "Ok, got to go..."
       ],
-      "classification": "regards__goodbyes"
+      "classification": "regards_goodbyes"
     }
   ]
 }

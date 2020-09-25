@@ -1,3 +1,4 @@
+from pprint import pprint
 from random import choice
 from typing import Union, List, Dict
 
@@ -9,31 +10,32 @@ class Markov:
         self.chain = {}
         self.order = order
 
-    def train(self, tokens: List[str]) -> None:
-        self.create_chain(tokens)
+    def train(self, text: str) -> None:
+        self.chain = {}
 
-    def create_chain(self, tokens: List[str]) -> None:
-        for i in range(self.order, len(tokens) - 1):
-            next_tokens = " ".join(tokens[i + 1:i + self.order + 2])
-            current_tokens = " ".join(tokens[i - self.order:i + 1])
+        for i in range(len(text) - self.order):
+            gram = text[i:i + self.order]
+            if gram not in self.chain:
+                self.chain[gram] = []
+            self.chain[gram].append(text[i + self.order])
 
-            if current_tokens in self.chain:
-                self.chain[current_tokens].append(next_tokens)
-            else:
-                self.chain[current_tokens] = [next_tokens]
+    def generate(self, seed: str, iterations=500, stopwords=".!?") -> str:
+        current_gram = None
 
-    def generate(self, seed: str, iterations=500) -> str:
-        res = None
-        for t in self.chain.keys():
-            if seed in t:
-                res = [t]
-                break
-        if res is None:
-            return "=-=-=-=-=( ERROR )=-=-=-=-="
+        for gram in self.chain.keys():
+            if gram.lower().startswith(seed[:self.order].lower()):
+                current_gram = gram
 
+        if current_gram is None:
+            return "Keyword not found"
+
+        result = current_gram
         for _ in range(iterations):
-            res.append(choice(self.chain[res[len(res) - 1]]))
-        return " ".join(res)
+            current_gram = choice(self.chain[result[-self.order:]])
+            result += current_gram
+            if current_gram in stopwords:
+                break
+        return result
 
     def load_from_chain(self, chain: Dict[str, str]) -> None:
         self.chain = chain

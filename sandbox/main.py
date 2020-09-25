@@ -1,11 +1,17 @@
 from Chatty.cognitive.cognition import CognitiveFunction
 
-if __name__ == "__main__":
-    cognition = CognitiveFunction("./sandbox/configuration/memoryConfig.xml")
-    while True:
-        inp = input("> ")
+working_directory = "./sandbox"
+configuration_file = "./configuration/memoryConfig.xml"
 
-        if inp == "quit":
+if __name__ == "__main__":
+    cognition = CognitiveFunction(configuration_file, working_directory)
+    while True:
+        try:
+            inp = input("> ")
+        except KeyboardInterrupt:
+            break
+
+        if inp == "##EXIT##":
             break
         else:
             print(cognition.process_language(inp))

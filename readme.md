@@ -57,6 +57,12 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Rewrite save system to be accessible systemwide(using SQL)</td> <td>DONE</td>
     </tr>
     <tr>
+        <td>Add weather API</td>                                            <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Rework the Markov Chain Generator</td>                          <td>DONE/td>
+    </tr>
+    <tr>
         <td>Build knowledge graph from user information</td>                <td>IN RESEARCH</td>
     </tr>
     <tr>
@@ -67,7 +73,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
     </tr>
 </table>
 
-### Maintenance tasks
+### Tasks
 <table>
     <tr>
         <th>task</th>                                                       <th>status</th>
@@ -77,5 +83,8 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
     </tr>
     <tr>
         <td>Rewrite logger</td>                                             <td>TODO</td>
+    </tr>
+    <tr>
+        <td>Add the about (help) section</td>                               <td>TODO</td>
     </tr>
 </table>

@@ -5,7 +5,6 @@ import pandas as pd
 
 class Connection:
     def __init__(self) -> None:
-        print(f"[DB] Connecting to {fss.access_fs('database').root}")
         self.conn = sqlite.connect(fss.access_fs("database").root)
 
     def get_connection(self) -> sqlite.Connection:

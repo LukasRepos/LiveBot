@@ -1,7 +1,10 @@
+from collections import deque
 from typing import Tuple, Union, List
 
+from Chatty.models.tfidf import TfIdf
 
-class LearnModule(object):
+
+class LearnModule:
     def __init__(self):
         self.learning = False
         self.doc_to_learn = None
@@ -13,7 +16,7 @@ class LearnModule(object):
         self.learning_responses = False
         self.classification = ""
 
-    def new_round(self, history, classifier, avail_responses):
+    def new_round(self, history: deque, classifier: TfIdf, avail_responses: List[str]):
         self.history = history
         self.learning = True
         self.doc_to_learn = self.history[0]["input"]
@@ -26,11 +29,12 @@ class LearnModule(object):
 
     def learn(self, doc: str) -> str:
         if not self.learning_responses:
-            self.classifier.submit_document(self.doc_to_learn, doc.replace(" ", "_"))
             self.classification = doc.replace(" ", "_")
+            print(self.doc_to_learn, self.classification)
+            self.classifier.submit_document(self.doc_to_learn, self.classification)
             self.classifier.fit()
             self.learning_responses = True
-            if doc.replace(" ", "_") in self.classes:
+            if self.classification in self.classes:
                 self.learning = False
                 return "Hey, I learned something new!"
             return "Ok, now what should I respond? (type ##quit) to end learning"
@@ -39,12 +43,12 @@ class LearnModule(object):
         return self.learn_responses(doc)
 
     def ask(self) -> str:
-        msg = "Type in the classification! I have the following classifications as an example!"
+        msg = "I didn't understand ;( Type in the classification! I have the following classifications as an example!"
         for class_ in self.classes:
             msg += f"\n{class_}"
         return msg
 
-    def is_learning(self):
+    def is_learning(self) -> bool:
         return self.learning
 
     def done(self) -> Union[bool, Tuple[str, List[str]]]:
@@ -53,7 +57,7 @@ class LearnModule(object):
             return self.classification, self.new_responses
         return False
 
-    def learn_responses(self, doc) -> str:
+    def learn_responses(self, doc: str) -> str:
         if doc.lower() == "##quit":
             self.learning = False
             return "Ok, nice!"

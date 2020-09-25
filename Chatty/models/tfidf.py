@@ -83,6 +83,7 @@ class TfIdf:
             dot = np.dot(a_vec, b_vec)
             sim = dot / (a_norm * b_norm)
             sim_values.append(sim)
+
         return (np.amax(sim_values) + 1) / 2, self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__class"], self.df.iloc[np.where(sim_values == np.amax(sim_values))[0][0]]["__original"]
 
     def save(self) -> None:

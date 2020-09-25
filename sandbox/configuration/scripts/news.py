@@ -1,5 +1,6 @@
 import html
 from collections import deque
+import random
 
 from hackernews import HackerNews
 
@@ -7,16 +8,16 @@ api = HackerNews()
 
 
 def most_recent(_: deque, __: str, ___: str) -> str:
-    new_story = api.new_stories(limit=1)[0]
+    new_story = random.choice(api.new_stories(limit=15))
     if new_story.text:
-        return f"Todays hottest news is '{new_story.title}'! This is the article!\n{html.unescape(new_story.text)}"
+        return f"Todays most recent news are '{new_story.title}'! This is the article!\n{html.unescape(new_story.text)}"
     else:
-        return f"Todays hottest news is '{new_story.title}'! See more in {new_story.url}"
+        return f"Todays most recent news are '{new_story.title}'! See more in {new_story.url}"
 
 
 def get_hottest(_: deque, __: str, ___: str) -> str:
-    hottest_story = api.top_stories(limit=1)[0]
+    hottest_story = random.choice(api.top_stories(limit=15))
     if hottest_story.text:
-        return f"The hottest news is '{hottest_story.title}'! This is the article!\n{html.unescape(hottest_story.text)}"
+        return f"Todays's hottest news is '{hottest_story.title}'! This is the article!\n{html.unescape(hottest_story.text)}"
     else:
-        return f"Uau! Have you see this news? '{hottest_story.title}' See more in {hottest_story.url}"
+        return f"Todays's hottest news is '{hottest_story.title}' See more in {hottest_story.url}"

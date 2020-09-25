@@ -1,6 +1,6 @@
 <root>
     <path type="scriptsModule" source="configuration.scripts" />
-    <path type="database" source="./memory.sql" />
+    <path type="database" source="./memory.mem" />
 
     <resource inline="TRUE" type="responses" name="None">
         <data>Don't know what to say...</data>
@@ -12,14 +12,14 @@
     </resource>
 
     <resource type="intents" filetype="json" source="../sandbox/configuration/intents/regards.json" />
-    <resource inline="TRUE" type="responses" name="regards__greetings">
+    <resource inline="TRUE" type="responses" name="regards_greetings">
         <data>Hello!</data>
         <data>Hi!</data>
         <data>Hi! How are you?</data>
         <data>Hello! How are you?</data>
         <data>Nice to see you!</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="regards__goodbyes">
+    <resource inline="TRUE" type="responses" name="regards_goodbyes">
         <data>Bye!</data>
         <data>Goodbye!</data>
         <data>Sad to see you go... Bye!</data>

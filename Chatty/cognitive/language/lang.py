@@ -16,7 +16,7 @@ from Chatty.saveState.saves import initialize_conn
 
 class Language:
     def __init__(self, responses: Dict[str, Callable[[deque, str, str], str]], intents: Dict[str, List[str]]):
-        self.recon_threshold = 0.75
+        self.recon_threshold = 0.80
         self.MAX_QUEUE_SIZE = 100
 
         self.history = deque()
@@ -57,6 +57,8 @@ class Language:
             "current_sent_value": ((self.history[0]["sentiment"]["compound"] if len(self.history) > 0 else 0) + recognize_sentiment(doc)["compound"]) / 2
         })
 
+        print("CERTAINTY", classify_results[0])
+
         if len(self.history) > self.MAX_QUEUE_SIZE:
             self.history.pop()
 
@@ -64,7 +66,8 @@ class Language:
         if self.learning_module.is_learning():
             response = self.learning_module.learn(doc)
             if done := self.learning_module.done():
-                self.responses[done[0]] = lambda hist, doc, reference: partial(random.choice, done[1])()
+                if done[1]:
+                    self.responses[done[0]] = lambda hist, doc, reference: partial(random.choice, done[1])()
             return response
 
         if classify_results[0] < self.recon_threshold:
