@@ -1,6 +1,5 @@
 <root>
     <path type="scriptsModule" source="configuration.scripts" />
-    <path type="database" source="./memory.mem" />
 
     <resource inline="TRUE" type="responses" name="None">
         <data>Don't know what to say...</data>
@@ -123,4 +122,9 @@
         <data>What are the hottest news?</data>
     </resource>
     <resource type="responses" name="hackernews_hottest" source=".news" function="get_hottest" />
+
+    <resource type="intents" inline="TRUE" name="city_weather">
+        <data>What is the weather forecast for</data>
+    </resource>
+    <resource type="responses" name="city_weather" source=".weather" function="forecast" />
 </root>

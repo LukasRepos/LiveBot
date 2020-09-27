@@ -1,3 +1,5 @@
+from typing import List, Any
+
 import Chatty.fileSystem.filesystems as fss
 import sqlite3 as sqlite
 import pandas as pd
@@ -16,10 +18,11 @@ class Connection:
     def to_df(self, table_name: str, index: str = None):
         return pd.read_sql_query(f"SELECT * from {table_name}", self.conn, index_col=index)
 
-    def execute_query(self, query: str) -> list:
+    def execute_query(self, query: str, *args) -> list:
         cursor = self.conn.cursor()
-        cursor.execute(query)
+        cursor.execute(query, args)
         results = cursor.fetchall()
+        self.conn.commit()
         cursor.close()
         return results
 

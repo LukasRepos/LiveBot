@@ -1,15 +1,14 @@
 import importlib
 import json
-import pathlib
 import random
 from collections import deque
 from functools import partial
 from typing import Dict, List, Callable
 
-from Chatty.cognitive.parser.parser import ParserRule
-from Chatty.fileSystem.fs import FileSystem
-from Chatty.fileSystem.filesystems import add_filesystem, access_fs
+from Chatty.parser.parser import ParserRule
 
+def response(_, __, ___, data):
+    return random.choice(data)
 
 class PathRule(ParserRule):
     def __init__(self):
@@ -19,8 +18,6 @@ class PathRule(ParserRule):
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "path":
             self.configs[attributes["type"]] = attributes["source"]
-            fs = FileSystem(access_fs("base").root / pathlib.PurePath(attributes["source"]))
-            add_filesystem(attributes["type"], fs)
 
     def get_configs(self) -> Dict[str, str]:
         return self.configs
@@ -33,7 +30,7 @@ class InlineReponsesRule(ParserRule):
 
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "responses":
-            self.responses[attributes["name"]] = lambda hist, doc, reference: partial(random.choice, data)()
+            self.responses[attributes["name"]] = partial(response, data=data)
 
     def get_responses(self) -> Dict[str, Callable[[deque, str, str], str]]:
         return self.responses

@@ -47,6 +47,3 @@ class Parser:
 
     def add_rule(self, rule: ParserRule) -> None:
         self.rules.append(rule)
-
-    def shutdown(self) -> None:
-        pass

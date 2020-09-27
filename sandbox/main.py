@@ -1,10 +1,11 @@
-from Chatty.cognitive.cognition import CognitiveFunction
+from Chatty.entrypoint import EntryPoint
 
 working_directory = "./sandbox"
 configuration_file = "./configuration/memoryConfig.xml"
+memory_database = "./configuration/memory.db"
 
 if __name__ == "__main__":
-    cognition = CognitiveFunction(configuration_file, working_directory)
+    chatty = EntryPoint(working_directory, memory_database, configuration_file)
     while True:
         try:
             inp = input("> ")
@@ -14,6 +15,6 @@ if __name__ == "__main__":
         if inp == "##EXIT##":
             break
         else:
-            print(cognition.process_language(inp))
+            print(chatty.process_nlp(inp))
 
-    cognition.shutdown()
+    chatty.shutdown()

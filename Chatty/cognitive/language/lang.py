@@ -15,33 +15,13 @@ from Chatty.saveState.saves import initialize_conn
 
 
 class Language:
-    def __init__(self, responses: Dict[str, Callable[[deque, str, str], str]], intents: Dict[str, List[str]]):
+    def __init__(self, classifier: TfIdf, responses: Dict[str, Callable[[deque, str, str], str]]):
         self.recon_threshold = 0.80
         self.MAX_QUEUE_SIZE = 100
-
         self.history = deque()
-        self.classifier = TfIdf()
-
+        self.classifier = classifier
         self.responses = responses
-
-        if try_access_fs("database") is not None and os.path.isfile(access_fs("database").root):
-            print("Loading memory")
-
-            # initalizes the database
-            initialize_conn()
-
-            self.classifier.load()
-        else:
-            # initalizes the database
-            initialize_conn()
-
-            for classification, patterns in tqdm(intents.items(), desc="Loading classifier"):
-                for pattern in patterns:
-                    self.classifier.submit_document(pattern, classification)
-            self.classifier.fit()
-
         self.error = False
-
         self.learning_module = LearnModule()
 
     def get_error(self) -> bool:
@@ -56,8 +36,6 @@ class Language:
             "sentiment": recognize_sentiment(doc),
             "current_sent_value": ((self.history[0]["sentiment"]["compound"] if len(self.history) > 0 else 0) + recognize_sentiment(doc)["compound"]) / 2
         })
-
-        print("CERTAINTY", classify_results[0])
 
         if len(self.history) > self.MAX_QUEUE_SIZE:
             self.history.pop()
@@ -79,6 +57,3 @@ class Language:
         else:
             logger.warning("Classification not found!")
             return self.responses["None"](self.history, doc, classify_results[2])
-
-    def shutdown(self) -> None:
-        self.classifier.save()
