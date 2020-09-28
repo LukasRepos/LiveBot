@@ -16,7 +16,7 @@ class LearnModule:
         self.learning_responses = False
         self.classification = ""
 
-    def new_round(self, history: deque, classifier: TfIdf, avail_responses: List[str]):
+    def new_round(self, history: deque, classifier: TfIdf, avail_responses: List[str]) -> None:
         self.history = history
         self.learning = True
         self.doc_to_learn = self.history[0]["input"]

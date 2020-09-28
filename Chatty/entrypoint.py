@@ -16,7 +16,7 @@ from Chatty.saveState.saves import initialize_conn, get_conn
 
 
 class EntryPoint:
-    def __init__(self, str_base_path: str, db_path: str, parser_config: str) -> None:
+    def __init__(self, str_base_path: str, db_path: str, parser_config: str, intents_folder: str) -> None:
         # solve the asynchronous problem with haxor
         nest_asyncio.apply()
 
@@ -30,6 +30,7 @@ class EntryPoint:
         add_filesystem("base", FileSystem(base_path))
         add_filesystem("config", FileSystem(base_path / pathlib.PurePath(parser_config)))
         add_filesystem("database", FileSystem(base_path / pathlib.PurePath(db_path)))
+        add_filesystem("intents", FileSystem(base_path / pathlib.PurePath(intents_folder)))
 
         # check if memory file already exists
         db = access_fs("database")
@@ -74,25 +75,59 @@ class EntryPoint:
             # extract parsed data
             path_configs = path_rule.get_configs()
             self.responses = {**inline_responses_rule.get_responses(), **external_scripts_rule.get_responses(path_configs)}
-            intents = {**external_intents_rule.get_intents(), **internal_intents_rule.get_intents()}
+            self.raw_responses = {**inline_responses_rule.get_raw_responses()}
+            self.intents = {**external_intents_rule.get_intents(), **internal_intents_rule.get_intents()}
 
             # create a connection to the memory database
             initialize_conn()
 
-            # creates internal tables to store responses
+            # creates internal tables
             connection = get_conn()
             connection.execute_query("CREATE TABLE RESERVED_RESPONSES ("
                                      "      response string,"
                                      "      data string"
                                      ")")
+            connection.execute_query("CREATE TABLE RESERVED_RAW_RESPONSES ("
+                                     "      response string,"
+                                     "      data string"
+                                     ")")
+            connection.execute_query("CREATE TABLE RESERVED_INTENTS ("
+                                     "      classification string,"
+                                     "      pattern string"
+                                     ")")
+            connection.execute_query("CREATE TABLE RESERVED_RAW_INTENTS ("
+                                     "      classification string,"
+                                     "      pattern string"
+                                     ")")
 
             # prime the classifier
             self.classifier = TfIdf()
-
-            for classification, patterns in tqdm(intents.items(), desc="Loading classifier"):
+            for classification, patterns in tqdm(self.intents.items(), desc="Loading classifier"):
                 for pattern in patterns:
                     self.classifier.submit_document(pattern, classification)
             self.classifier.fit()
+
+            # extract the parsed intents and classifications
+            self.intents = {}
+            for c, p in zip(self.classifier.df["__class"], self.classifier.df.index.values):
+                if c in self.intents:
+                    self.intents[c].append(p)
+                else:
+                    self.intents[c] = [p]
+
+            # packs and saves the raw intents
+            for k, data in tqdm(self.intents.items(), desc="Saving first load data"):
+                for d in data:
+                    get_conn().execute_query("INSERT INTO "
+                                             "RESERVED_RAW_INTENTS(classification, pattern) "
+                                             "VALUES(?, ?)", k, d)
+
+            # packs and saves the raw responses
+            for k, data in tqdm(self.raw_responses.items(), desc="Saving first load data"):
+                for d in data:
+                    get_conn().execute_query("INSERT INTO "
+                                             "RESERVED_RAW_RESPONSES(response, data) "
+                                             "VALUES(?, ?)", k, d)
 
             self.cogito.load_objects(self.classifier, self.responses)
 
@@ -109,7 +144,7 @@ class EntryPoint:
         for k, v in self.responses.items():
             get_conn().execute_query("INSERT INTO "
                                      "RESERVED_RESPONSES(response, data) "
-                                     f"VALUES(?, ?)", str(k), pickle.dumps(v))
+                                     "VALUES(?, ?)", k, pickle.dumps(v))
 
         # closes the connection with the db
         get_conn().shutdown()

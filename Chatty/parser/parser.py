@@ -7,6 +7,7 @@ from tqdm import tqdm
 import Chatty.fileSystem.filesystems as fss
 
 
+# BASE CLASS FOR A RULE
 class ParserRule:
     def __init__(self, requirements: List[str]):
         self.requirements = requirements

@@ -1,4 +1,8 @@
-import termcolor
+#####################
+## NO LONGER WORKS ##
+#####################
+
+"""import termcolor
 
 from Chatty.fileSystem import fs
 
@@ -24,3 +28,4 @@ def log(msg: str, to_file=False) -> None:
         fs.write("./logger/log.txt", msg)
     else:
         termcolor.cprint(f"{msg}\n", "grey")
+"""

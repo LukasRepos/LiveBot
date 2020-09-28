@@ -59,6 +59,12 @@
         <data>No, I am inside the computer and remember, always follow the white rabbit!</data>
     </resource>
 
+    <resource type="intents" filetype="json" source="../sandbox/configuration/intents/about.json" />
+    <resource inline="TRUE" type="responses" name="about">
+        <data>I can do many things! I can create agendas, weather forecast, news and so much more!</data>
+    </resource>
+
+
     <resource type="intents" inline="TRUE" name="time">
         <data>What time is it?</data>
     </resource>

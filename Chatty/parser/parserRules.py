@@ -7,8 +7,11 @@ from typing import Dict, List, Callable
 
 from Chatty.parser.parser import ParserRule
 
+
+# default response object for every response given
 def response(_, __, ___, data):
     return random.choice(data)
+
 
 class PathRule(ParserRule):
     def __init__(self):
@@ -27,13 +30,18 @@ class InlineReponsesRule(ParserRule):
     def __init__(self):
         super().__init__(["inline", "type", "name"])
         self.responses = {}
+        self.raw_responses = {}
 
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "responses":
             self.responses[attributes["name"]] = partial(response, data=data)
+            self.raw_responses[attributes["name"]] = data
 
     def get_responses(self) -> Dict[str, Callable[[deque, str, str], str]]:
         return self.responses
+
+    def get_raw_responses(self) -> Dict[str, List[str]]:
+        return self.raw_responses
 
 
 class ExternalScriptRule(ParserRule):
@@ -45,7 +53,7 @@ class ExternalScriptRule(ParserRule):
         if tag == "resource" and attributes["type"] == "responses":
             self.responses[attributes["name"]] = [attributes["source"], attributes["function"]]
 
-    def get_responses(self, paths):
+    def get_responses(self, paths: Dict[str, str]) -> Dict[str, Callable[[deque, str, str], str]]:
         for name, [source, func] in self.responses.items():
             self.responses[name] = getattr(importlib.import_module(source, paths["scriptsModule"]), func)
         return self.responses
@@ -64,7 +72,7 @@ class ExternalIntentRule(ParserRule):
             for doc in data["docs"]:
                 self.intents[doc["classification"]] = doc["patterns"]
 
-    def get_intents(self):
+    def get_intents(self) -> Dict[str, str]:
         return self.intents
 
 
@@ -77,5 +85,5 @@ class InternalIntentRule(ParserRule):
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "intents":
             self.intents[attributes["name"]] = data
 
-    def get_intents(self):
+    def get_intents(self) -> Dict[str, List[str]]:
         return self.intents

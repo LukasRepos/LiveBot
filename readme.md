@@ -82,6 +82,15 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Add C addons</td>                                               <td>IN RESEARCH - UNCERTAIN</td>
     </tr>
     <tr>
+        <td>Rewrite logger</td>                                             <td>HIGH PRIORITY</td>
+    </tr>
+    <tr>
+        <td>Rewrite profiler</td>                                           <td>LOW PRIORITY</td>
+    </tr>
+    <tr>
+        <td>Integrate filesystems in profile results program</td>           <td>LOW PRIORITY</td>
+    </tr>
+    <tr>
         <td>Rewrite logger</td>                                             <td>TODO</td>
     </tr>
     <tr>

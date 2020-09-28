@@ -2,19 +2,20 @@ import datetime
 import json
 from math import inf
 from pprint import pprint
+from typing import Dict, Any
 
 import requests
 
 
 class Weather:
-    def __init__(self, token):
+    def __init__(self, token: str):
         self.access_token = token
 
         self.BASE_URL = "https://api.openweathermap.org/data/2.5"
 
         self.FORECAST_URL = self.BASE_URL + "/forecast"
 
-    def get_forecast(self, city, count: int = None):
+    def get_forecast(self, city: str, count: int = None) -> Dict[str, Any]:
         results = requests.get(self.FORECAST_URL, params={
             "units": "metric",
             "appid": self.access_token,

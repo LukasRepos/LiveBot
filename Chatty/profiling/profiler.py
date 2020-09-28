@@ -1,4 +1,8 @@
-import cProfile
+#####################
+## NO LONGER WORKS ##
+#####################
+
+"""import cProfile
 from Chatty.cognitive.cognition import CognitiveFunction
 
 queries = [
@@ -16,3 +20,4 @@ def main_function():
 
 
 results = cProfile.run("main_function()", "stats.prof")
+"""

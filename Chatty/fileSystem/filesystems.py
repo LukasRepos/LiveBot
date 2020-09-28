@@ -15,5 +15,5 @@ def access_fs(fs: str) -> Union[FileSystem, None]:
     return filesystems[fs] if fs in filesystems else None
 
 
-def try_access_fs(fs: str):
+def try_access_fs(fs: str) -> Union[FileSystem, None]:
     return filesystems[fs] if fs in filesystems else None

@@ -9,11 +9,11 @@ class CognitiveFunction:
     def __init__(self):
         self.language_module = None
 
-    def load_serialized(self, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]):
+    def load_serialized(self, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
         self.language_module = Language(classifier, responses)
 
-    def load_objects(self, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]):
+    def load_objects(self, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
         self.language_module = Language(classifier, responses)
 
