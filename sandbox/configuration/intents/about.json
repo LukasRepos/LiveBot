@@ -2,7 +2,8 @@
   "docs": [
     {
       "patterns": [
-        "What can you do?"
+        "What can you do?",
+        "So what are you able to do?"
       ],
       "classification": "about"
     }

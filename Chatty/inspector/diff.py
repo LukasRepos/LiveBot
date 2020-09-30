@@ -28,4 +28,15 @@ for km, vm in modified_intents.items():
         diff[km] = vm
     elif vm != original_intents[km]:
         diff[km] = list(set(vm) - set(original_intents[km]))
-print(diff)
+
+cursor.execute("SELECT * FROM RESERVED_RAW_RESPONSES")
+raw_response_list = cursor.fetchall()
+raw_responses = {k: v for k, v in raw_response_list}
+
+print(diff.keys())
+print(raw_responses.keys())
+
+print(raw_responses)
+
+cursor.close()
+conn.close()

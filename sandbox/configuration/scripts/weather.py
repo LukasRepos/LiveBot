@@ -49,4 +49,4 @@ def forecast(_: deque, doc: str, reference: str) -> str:
                 min_temp_hour = date.hour
         else:
             continue
-    return f"For day {tomorrow.day} the max temp will be {max_temp}ºC at {max_temp_hour}h and the minimun will be {min_temp}ªC at {min_temp_hour}h."
+    return f"Tomorrow the max temp will be {max_temp}ºC at {max_temp_hour}h and the minimun will be {min_temp}ªC at {min_temp_hour}h."

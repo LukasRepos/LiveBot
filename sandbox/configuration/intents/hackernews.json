@@ -1,0 +1,18 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "What is the most recent new?",
+        "What are the most recent news?"
+      ],
+      "classification": "hackernews_recent"
+    },
+    {
+      "patterns": [
+        "What is the hottest new?",
+        "What are the hottest news?"
+      ],
+      "classification": "hackernews_hottest"
+    }
+  ]
+}

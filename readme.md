@@ -57,7 +57,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Rewrite save system to be accessible systemwide(using SQL)</td> <td>DONE</td>
     </tr>
     <tr>
-        <td>Add weather API</td>                                            <td>IN RESEARCH</td>
+        <td>Add weather API</td>                                            <td>DONE</td>
     </tr>
     <tr>
         <td>Rework the Markov Chain Generator</td>                          <td>DONE/td>
@@ -89,11 +89,5 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
     </tr>
     <tr>
         <td>Integrate filesystems in profile results program</td>           <td>LOW PRIORITY</td>
-    </tr>
-    <tr>
-        <td>Rewrite logger</td>                                             <td>TODO</td>
-    </tr>
-    <tr>
-        <td>Add the about (help) section</td>                               <td>TODO</td>
     </tr>
 </table>

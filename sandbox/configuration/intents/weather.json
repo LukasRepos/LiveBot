@@ -1,0 +1,10 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "What is the weather forecast for"
+      ],
+      "classification": "weather_city_tomorrow"
+    }
+  ]
+}

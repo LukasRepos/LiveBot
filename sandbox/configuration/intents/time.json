@@ -1,0 +1,12 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "What time is it?",
+        "Can you tell me the time?",
+        "Please what time is it?"
+      ],
+      "classification": "time"
+    }
+  ]
+}

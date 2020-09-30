@@ -2,7 +2,7 @@ import os
 from collections import deque
 from functools import partial
 import random
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Union
 
 from tqdm import tqdm
 
@@ -14,8 +14,13 @@ from Chatty.models.tfidf import TfIdf
 from Chatty.saveState.saves import initialize_conn
 
 
+# default response object for every response given
+def base_response(_, __, ___, data):
+    return random.choice(data)
+
+
 class Language:
-    def __init__(self, classifier: TfIdf, responses: Dict[str, Callable[[deque, str, str], str]]):
+    def __init__(self, classifier: TfIdf, responses: Dict[str, Union[Callable[[deque, str, str], str], partial]]):
         self.recon_threshold = 0.80
         self.MAX_QUEUE_SIZE = 100
         self.history = deque()
@@ -36,6 +41,7 @@ class Language:
             "sentiment": recognize_sentiment(doc),
             "current_sent_value": ((self.history[0]["sentiment"]["compound"] if len(self.history) > 0 else 0) + recognize_sentiment(doc)["compound"]) / 2
         })
+        print("Certainty:", classify_results[0])
 
         if len(self.history) > self.MAX_QUEUE_SIZE:
             self.history.pop()
@@ -45,7 +51,7 @@ class Language:
             response = self.learning_module.learn(doc)
             if done := self.learning_module.done():
                 if done[1]:
-                    self.responses[done[0]] = lambda hist, doc, reference: partial(random.choice, done[1])()
+                    self.responses[done[0]] = partial(base_response, data=done[1])
             return response
 
         if classify_results[0] < self.recon_threshold:
@@ -55,5 +61,5 @@ class Language:
         if classify_results[1] in self.responses:
             return self.responses[classify_results[1]](self.history, doc, classify_results[2])
         else:
-            logger.warning("Classification not found!")
+            print("Classification not found!")
             return self.responses["None"](self.history, doc, classify_results[2])

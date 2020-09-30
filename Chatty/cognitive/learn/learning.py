@@ -29,7 +29,7 @@ class LearnModule:
 
     def learn(self, doc: str) -> str:
         if not self.learning_responses:
-            self.classification = doc.replace(" ", "_")
+            self.classification = doc.replace(" ", "_").lower()
             self.classifier.submit_document(self.doc_to_learn, self.classification)
             self.classifier.fit()
             self.learning_responses = True

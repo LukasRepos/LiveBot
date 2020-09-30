@@ -1,0 +1,47 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Add an appointment to tomorrow.",
+        "Create an event for tomorrow.",
+        "Add an event to tomorrow."
+      ],
+      "classification": "calendar_add_tomorrow"
+    },
+    {
+      "patterns": [
+        "Add an appointment to date",
+        "Add an event to date",
+        "Add an appointment to the date",
+        "Add an event to the date"
+      ],
+      "classification": "calendar_add_date"
+    },
+    {
+      "patterns": [
+        "What do I have tomorrow?",
+        "What is in my agenda for tomorrow?"
+      ],
+      "classification": "calendar_get_tomorrow"
+    },
+    {
+      "patterns": [
+        "What is in my agenda for the date",
+        "What is in my agenda at"
+      ],
+      "classification": "calendar_get_date"
+    },
+    {
+      "patterns": [
+        "Add an event at"
+      ],
+      "classification": "calendar_add_weekday"
+    },
+    {
+      "patterns": [
+        "What do I have at the"
+      ],
+      "classification": "calendar_get_weekday"
+    }
+  ]
+}

@@ -3,8 +3,10 @@ import json
 import random
 from collections import deque
 from functools import partial
+from pathlib import PurePath
 from typing import Dict, List, Callable
 
+from Chatty.fileSystem.filesystems import access_fs
 from Chatty.parser.parser import ParserRule
 
 
@@ -66,7 +68,7 @@ class ExternalIntentRule(ParserRule):
 
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
         if tag == "resource" and attributes["type"] == "intents":
-            with open(attributes["source"]) as f:
+            with open(access_fs("intents").root / PurePath(attributes["source"])) as f:
                 data = json.load(f)
 
             for doc in data["docs"]:

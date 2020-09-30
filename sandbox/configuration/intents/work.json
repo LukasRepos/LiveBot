@@ -1,0 +1,11 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "So what do you do?",
+        "So what have you been up to?"
+      ],
+      "classification": "work"
+    }
+  ]
+}

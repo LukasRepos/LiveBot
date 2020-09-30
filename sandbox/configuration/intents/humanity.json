@@ -2,15 +2,10 @@
   "docs": [
     {
       "patterns": [
-        "So you are really a computer?"
-      ],
-      "classification": "humanity_01"
-    },
-    {
-      "patterns": [
+        "So you are really a computer?",
         "Are you human?"
       ],
-      "classification": "humanity_02"
+      "classification": "humanity"
     }
   ]
 }
