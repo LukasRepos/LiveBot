@@ -42,7 +42,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Implement wikipedia text generation using Markov Chains</td>    <td>DONE</td>
     </tr>
     <tr>
-        <td>Add the sentiments module</td>                                  <td>BASICS DONE</td>
+        <td>Add the sentiments module</td>                                  <td>DONE</td>
     </tr>
     <tr>
         <td>Calendar and note taking features</td>                          <td>DONE</td>
@@ -63,13 +63,31 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Rework the Markov Chain Generator</td>                          <td>DONE/td>
     </tr>
     <tr>
-        <td>Build knowledge graph from user information</td>                <td>IN RESEARCH</td>
+        <td>Take initiative on talking</td>                                 <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Add Twitter API</td>                                            <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Tell jokes, with feature to add jokes</td>                      <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Tell Twitter hottest tags</td>                                  <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Tell riddles, with option to add more</td>                      <td>IN RESEARCH</td>
     </tr>
     <tr>
         <td>Build knowledge graph from wikipedia</td>                       <td>IN RESEARCH</td>
     </tr>
     <tr>
-        <td>Add proper learning</td>                                        <td>ON HOLD</td>
+        <td>Improve from pattern matching to NLP matching</td>              <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Migrate to spacy</td>                                           <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Add proper learning</td>                                        <td>IN RESEARCH</td>
     </tr>
 </table>
 
@@ -79,7 +97,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <th>task</th>                                                       <th>status</th>
     </tr>
     <tr>
-        <td>Add C addons</td>                                               <td>IN RESEARCH - UNCERTAIN</td>
+        <td>Add C addons</td>                                               <td>LOW PRIORITY</td>
     </tr>
     <tr>
         <td>Rewrite logger</td>                                             <td>HIGH PRIORITY</td>
@@ -89,5 +107,8 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
     </tr>
     <tr>
         <td>Integrate filesystems in profile results program</td>           <td>LOW PRIORITY</td>
+    </tr>
+    <tr>
+        <td>Improve README file</td>                                        <td>MEDIUM PRIORITY</td>
     </tr>
 </table>

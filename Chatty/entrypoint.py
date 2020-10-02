@@ -45,7 +45,7 @@ class EntryPoint:
             self.classifier = TfIdf()
             self.classifier.load()
 
-            self.cogito.load_serialized(self.classifier, self.responses)
+            self.cogito.load_serialized(list(set(self.classifier.df["__class"])), self.classifier, self.responses)
         else:
             # does not exist, load XML file
             # initialize rules
@@ -129,7 +129,7 @@ class EntryPoint:
                                              "RESERVED_RAW_RESPONSES(response, data) "
                                              "VALUES(?, ?)", k, d)
 
-            self.cogito.load_objects(self.classifier, self.responses)
+            self.cogito.load_objects(list(set(self.intents.keys())), self.classifier, self.responses)
 
     def process_nlp(self, text: str) -> str:
         return self.cogito.nlp(text)

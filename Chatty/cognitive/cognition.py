@@ -1,24 +1,40 @@
 from collections import deque
 from typing import Dict, Callable, List
 
-from Chatty.cognitive.language.lang import Language
+from Chatty.cognitive.language.lang import LanguageModule
+from Chatty.cognitive.learn.learnModule import LearningModule
 from Chatty.models.tfidf import TfIdf
 
 
 class CognitiveFunction:
     def __init__(self):
         self.language_module = None
+        self.learning_module = None
 
-    def load_serialized(self, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
+    def load_serialized(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
-        self.language_module = Language(classifier, responses)
+        self.language_module = LanguageModule(classifier, responses)
+        self.learning_module = LearningModule(classifications, responses)
 
-    def load_objects(self, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
+    def load_objects(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
-        self.language_module = Language(classifier, responses)
+        self.language_module = LanguageModule(classifier, responses)
+        self.learning_module = LearningModule(classifications, responses)
 
-    def process_language(self, doc: str) -> str:
-        return self.language_module.read(doc)
+    def nlp(self, doc: str) -> str:
+        learning_mod_response = self.learning_module.process_nlp(doc)
+        learning_mod_is_engaged = self.learning_module.is_learning()
 
-    def nlp(self, text: str) -> str:
-        return self.language_module.read(text)
+        language_mod_response = self.language_module.process_nlp(doc)
+        language_mod_certainty = self.language_module.get_certainty()
+        language_mod_threshold = self.language_module.get_threshold()
+
+        if not learning_mod_is_engaged and language_mod_certainty < language_mod_threshold:
+            self.learning_module.start_learn_process()
+
+        learning_mod_is_engaged = self.learning_module.is_learning()
+
+        if not learning_mod_is_engaged:
+            return language_mod_response
+        else:
+            return learning_mod_response
