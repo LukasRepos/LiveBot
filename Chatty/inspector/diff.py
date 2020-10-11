@@ -1,5 +1,6 @@
-import pandas as pd
 import sqlite3 as sqlite
+
+import pandas as pd
 
 conn = sqlite.connect("/home/luiscarlos/PycharmProjects/LiveBot/sandbox/configuration/memory.db")
 
@@ -34,9 +35,7 @@ raw_response_list = cursor.fetchall()
 raw_responses = {k: v for k, v in raw_response_list}
 
 print(diff.keys())
-print(raw_responses.keys())
-
-print(raw_responses)
+print(diff)
 
 cursor.close()
 conn.close()

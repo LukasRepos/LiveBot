@@ -1,6 +1,5 @@
-from pprint import pprint
 from random import choice
-from typing import Union, List, Dict
+from typing import Union, Dict
 
 chains = {}
 

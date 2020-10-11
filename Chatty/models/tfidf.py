@@ -7,7 +7,6 @@ import pandas as pd
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
-from Chatty.fileSystem.filesystems import access_fs
 from Chatty.saveState.saves import get_conn
 
 
@@ -28,6 +27,7 @@ class TfIdf:
             return
 
         if " ".join(terms) in self.df.index.values:
+            self.df.at[" ".join(terms), "__class"] = _class
             return
 
         for term in terms:

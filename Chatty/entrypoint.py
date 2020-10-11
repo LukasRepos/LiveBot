@@ -6,6 +6,7 @@ import nest_asyncio
 from tqdm import tqdm
 
 from Chatty.cognitive.cognition import CognitiveFunction
+from Chatty.cognitive.language.nlpLoader import init_nlp_model
 from Chatty.fileSystem.filesystems import add_filesystem, access_fs
 from Chatty.fileSystem.fs import FileSystem
 from Chatty.models.tfidf import TfIdf
@@ -19,6 +20,11 @@ class EntryPoint:
     def __init__(self, str_base_path: str, db_path: str, parser_config: str, intents_folder: str) -> None:
         # solve the asynchronous problem with haxor
         nest_asyncio.apply()
+
+        # initalize the NLP model
+        print("Importing NLP models...")
+        init_nlp_model()
+        print("Done")
 
         # creates the cognitiom module
         self.cogito = CognitiveFunction()
@@ -47,7 +53,6 @@ class EntryPoint:
 
             self.cogito.load_serialized(list(set(self.classifier.df["__class"])), self.classifier, self.responses)
         else:
-            # does not exist, load XML file
             # initialize rules
             path_rule = PathRule()
 
@@ -137,8 +142,6 @@ class EntryPoint:
     def shutdown(self):
         # saves the classifier data
         self.classifier.save()
-
-        pickle.dump(self.responses["None"], open("../../pickle/testPartials.bin", "wb"))
 
         # pickles the response data
         for k, v in self.responses.items():

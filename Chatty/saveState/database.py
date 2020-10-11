@@ -1,8 +1,8 @@
-from typing import List, Any
+import sqlite3 as sqlite
+
+import pandas as pd
 
 import Chatty.fileSystem.filesystems as fss
-import sqlite3 as sqlite
-import pandas as pd
 
 
 class Connection:

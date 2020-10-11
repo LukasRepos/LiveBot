@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ElTree
-
 from typing import List, Dict, KeysView
 
 from tqdm import tqdm

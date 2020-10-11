@@ -1,40 +1,55 @@
 from collections import deque
 from typing import Dict, Callable, List
 
-from Chatty.cognitive.language.lang import LanguageModule
+from Chatty.cognitive.language.languageModule import LanguageModule
 from Chatty.cognitive.learn.learnModule import LearningModule
 from Chatty.models.tfidf import TfIdf
+from Chatty.utilities.stack import Stack
 
 
 class CognitiveFunction:
     def __init__(self):
-        self.language_module = None
-        self.learning_module = None
+        self.modules = {}
+
+        self.watchers = []
+
+        self.module_stack = Stack()
+        self.module_stack.push("language")
 
     def load_serialized(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
-        self.language_module = LanguageModule(classifier, responses)
-        self.learning_module = LearningModule(classifications, responses)
+        self.modules["language"] = LanguageModule(classifier, responses)
+        self.modules["learning"] = LearningModule(classifier, classifications, responses)
 
-    def load_objects(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
+        self.watchers.append("learning")
+
+    def load_objects(self, classifications: List[str], classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
-        self.language_module = LanguageModule(classifier, responses)
-        self.learning_module = LearningModule(classifications, responses)
+        self.modules["language"] = LanguageModule(classifier, responses)
+        self.modules["learning"] = LearningModule(classifier, classifications, responses)
+
+        # initialize watchers
+        self.watchers.append("learning")
 
     def nlp(self, doc: str) -> str:
-        learning_mod_response = self.learning_module.process_nlp(doc)
-        learning_mod_is_engaged = self.learning_module.is_learning()
+        for watcher in self.watchers:
+            self.modules[watcher].watch(doc)
 
-        language_mod_response = self.language_module.process_nlp(doc)
-        language_mod_certainty = self.language_module.get_certainty()
-        language_mod_threshold = self.language_module.get_threshold()
+        module = self.modules[self.module_stack.peek()]
+        response = module.process_nlp(doc)
 
-        if not learning_mod_is_engaged and language_mod_certainty < language_mod_threshold:
-            self.learning_module.start_learn_process()
+        if module.process_ended():
+            module.finalize()
+            self.module_stack.pop()
 
-        learning_mod_is_engaged = self.learning_module.is_learning()
+        if next_module := module.pass_to():
+            self.modules[next_module].prepare()
+            response = self.modules[next_module].process_nlp(doc)
 
-        if not learning_mod_is_engaged:
-            return language_mod_response
-        else:
-            return learning_mod_response
+            self.module_stack.push(next_module)
+
+            if self.modules[next_module].process_ended():
+                self.modules[next_module].finalize()
+                self.module_stack.pop()
+
+        return response
