@@ -1,6 +1,7 @@
 import calendar
 from collections import deque
 import datetime
+from typing import Dict, Any
 
 import nltk
 
@@ -8,11 +9,11 @@ agenda = {}
 recurrent_events = {i: [] for i in range(7)}
 
 
-def add_date(_: deque, doc: str, ref: str) -> str:
-    appointments = " ".join(nltk.sent_tokenize(doc)[1:])
+def add_date(data: Dict[str, Any]) -> str:
+    appointments = " ".join(nltk.sent_tokenize(data["document"])[1:])
 
-    reference = ref.lower()
-    document = nltk.sent_tokenize(doc)[0].lower()
+    reference = data["reference"].lower()
+    document = nltk.sent_tokenize(data["document"])[0].lower()
     if reference in document:
         date_string = document.split(reference)[1]
     else:
@@ -44,9 +45,9 @@ def add_date(_: deque, doc: str, ref: str) -> str:
     return "Done sir"
 
 
-def get_date(_: deque, doc: str, ref: str) -> str:
-    reference = ref.lower()
-    document = nltk.sent_tokenize(doc)[0].lower()
+def get_date(data: Dict[str, Any]) -> str:
+    reference = data["reference"].lower()
+    document = nltk.sent_tokenize(data["document"])[0].lower()
     if reference in document:
         date_string = document.split(reference)[1]
     else:
@@ -79,8 +80,8 @@ def get_date(_: deque, doc: str, ref: str) -> str:
     return msg
 
 
-def add_tomorrow(_: deque, doc: str, ___: str) -> str:
-    appointments = " ".join(nltk.sent_tokenize(doc)[1:])
+def add_tomorrow(data: Dict[str, Any]) -> str:
+    appointments = " ".join(nltk.sent_tokenize(data["document"])[1:])
     due_date = datetime.datetime.today().date() + datetime.timedelta(days=1)
     timestamp = calendar.timegm(due_date.timetuple())
 
@@ -91,7 +92,7 @@ def add_tomorrow(_: deque, doc: str, ___: str) -> str:
     return "Done sir!"
 
 
-def get_tomorrow(_: deque, __: str, ___: str) -> str:
+def get_tomorrow(__: Dict[str, Any]) -> str:
     due_date = datetime.datetime.today().date() + datetime.timedelta(days=1)
     timestamp = calendar.timegm(due_date.timetuple())
 
@@ -111,12 +112,12 @@ def get_tomorrow(_: deque, __: str, ___: str) -> str:
     return msg
 
 
-def add_recurrent(_: deque, doc: str, ref: str) -> str:
+def add_recurrent(data: Dict[str, Any]) -> str:
     weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-    appointments = " ".join(nltk.sent_tokenize(doc)[1:])
+    appointments = " ".join(nltk.sent_tokenize(data["document"])[1:])
 
-    reference = ref.lower()
-    document = nltk.sent_tokenize(doc)[0].lower()
+    reference = data["reference"].lower()
+    document = nltk.sent_tokenize(data["document"])[0].lower()
     flag = False
     index = -1
     if reference in document:
@@ -134,11 +135,11 @@ def add_recurrent(_: deque, doc: str, ref: str) -> str:
     return "Done sir!"
 
 
-def get_recurrent(_: deque, doc: str, ref: str) -> str:
+def get_recurrent(data: Dict[str, Any]) -> str:
     weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
-    reference = ref.lower()
-    document = nltk.sent_tokenize(doc)[0].lower()
+    reference = data["reference"].lower()
+    document = nltk.sent_tokenize(data["document"])[0].lower()
     flag = False
     index = -1
     if reference in document:
@@ -161,5 +162,5 @@ def get_recurrent(_: deque, doc: str, ref: str) -> str:
         return msg
 
 
-def debug(_: deque, __: str, ___: str) -> str:
+def debug(_: Dict[str, Any]) -> str:
     return str(agenda)

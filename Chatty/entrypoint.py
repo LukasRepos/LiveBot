@@ -6,7 +6,7 @@ import nest_asyncio
 from tqdm import tqdm
 
 from Chatty.cognitive.cognition import CognitiveFunction
-from Chatty.cognitive.language.nlpLoader import init_nlp_model
+from Chatty.cognitive.NLP.nlpLoader import init_nlp_model
 from Chatty.fileSystem.filesystems import add_filesystem, access_fs
 from Chatty.fileSystem.fs import FileSystem
 from Chatty.models.tfidf import TfIdf

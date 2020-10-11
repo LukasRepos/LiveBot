@@ -1,12 +1,9 @@
 import datetime
 import json
-import os
-import pathlib
 import string
-from collections import deque
 from math import inf
-from pprint import pprint
-
+from typing import Dict, Any
+from spacy.displacy import serve
 
 from Chatty.API.weatherAPI import Weather
 
@@ -16,14 +13,11 @@ with open("../sandbox/configuration/APIKEYS.json") as f:
 weather_api_key = keys["WEATHER"]
 
 
-def forecast(_: deque, doc: str, reference: str) -> str:
-    try:
-        city = doc.split(reference)[1]
-    except IndexError:
-        return "Did not understood city"
-
-    for punct in string.punctuation:
-        city = city.replace(punct, "")
+def forecast(data: Dict[str, Any]) -> str:
+    city = list(filter(lambda ent: ent.label_ == "GPE", data["NLP"].ents))
+    if len(city) == 0:
+        return "Could not recognize city... Try again"
+    city = city[0].text
 
     weather_api = Weather(weather_api_key)
     forecasts = weather_api.get_forecast(city)
@@ -49,4 +43,4 @@ def forecast(_: deque, doc: str, reference: str) -> str:
                 min_temp_hour = date.hour
         else:
             continue
-    return f"Tomorrow the max temp will be {max_temp}ºC at {max_temp_hour}h and the minimum will be {min_temp}ªC at {min_temp_hour}h."
+    return f"Tomorrow, for {city} the max temp will be {max_temp}ºC at {max_temp_hour}h and the minimum will be {min_temp}ªC at {min_temp_hour}h."

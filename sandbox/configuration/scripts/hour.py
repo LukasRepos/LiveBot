@@ -1,8 +1,8 @@
-from collections import deque
 from datetime import datetime
+from typing import Dict, Any
 
 
-def response(_: deque, __: str, ___: str) -> str:
+def response(__: Dict[str, Any]) -> str:
     time = datetime.today()
 
     months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]

@@ -2,19 +2,19 @@ import functools
 from collections import deque
 from functools import partial
 from random import choice
-from typing import Dict, Union, Callable, List
+from typing import Dict, Union, Callable, List, Any
 
 from Chatty.cognitive.module import ChattyModule
 from Chatty.models.tfidf import TfIdf
 from Chatty.utilities.tables import table
 
 
-def base_response(_, __, ___, data):
+def base_response(_, data):
     return choice(data)
 
 
 class LearningModule(ChattyModule):
-    def __init__(self, classifier: TfIdf, classifications: List[str], responses: Dict[str, Union[Callable[[deque, str, str], str], partial]]):
+    def __init__(self, classifier: TfIdf, classifications: List[str], responses: Dict[str, Callable[[Dict[str, Any]], str]]):
         self.classifications = classifications
         self.lang_classifier = classifier
         self.responses = responses

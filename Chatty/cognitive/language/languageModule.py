@@ -1,13 +1,8 @@
 import random
-from collections import deque
-from functools import partial
-from typing import Dict, Callable, Union
+from typing import Dict, Callable, Any
 
-from numpy import inf
-
-
+from Chatty.cognitive.NLP.nlpModule import NlpModule
 from Chatty.cognitive.module import ChattyModule
-from Chatty.models.sentrecon import recognize_sentiment
 from Chatty.models.tfidf import TfIdf
 
 
@@ -17,12 +12,13 @@ def base_response(_, __, ___, data):
 
 
 class LanguageModule(ChattyModule):
-    def __init__(self, classifier: TfIdf, responses: Dict[str, Callable[[deque, str, str], str]]):
+    def __init__(self, classifier: TfIdf, responses: Dict[str, Callable[[Dict[str, Any]], str]], nlp: NlpModule):
         self.classifier = classifier
         self.responses = responses
 
         self.ready_to_pass = False
         self.THRESHOLD = 0.8
+        self.nlp = nlp
 
     def prepare(self):
         pass
@@ -35,7 +31,12 @@ class LanguageModule(ChattyModule):
         reference = classifier_results[2]
 
         if certainty > self.THRESHOLD:
-            return self.responses[class_](deque(), doc, reference)
+            return self.responses[class_]({
+                "document": doc,
+                "reference": reference,
+                "SVO": self.nlp.tree[-1],
+                "NLP": self.nlp.sents[-1]
+            })
         else:
             self.ready_to_pass = True
             return ""
@@ -50,6 +51,7 @@ class LanguageModule(ChattyModule):
 
     def finalize(self):
         pass
+
 
 """
 class LanguageModule:

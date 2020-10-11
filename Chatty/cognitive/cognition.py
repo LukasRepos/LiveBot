@@ -1,6 +1,7 @@
 from collections import deque
-from typing import Dict, Callable, List
+from typing import Dict, Callable, List, Any
 
+from Chatty.cognitive.NLP.nlpModule import NlpModule
 from Chatty.cognitive.language.languageModule import LanguageModule
 from Chatty.cognitive.learn.learnModule import LearningModule
 from Chatty.models.tfidf import TfIdf
@@ -16,16 +17,19 @@ class CognitiveFunction:
         self.module_stack = Stack()
         self.module_stack.push("language")
 
-    def load_serialized(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
+    def load_serialized(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[Dict[str, Any]], str]]) -> None:
         # initialize modules
-        self.modules["language"] = LanguageModule(classifier, responses)
+        self.modules["NLP"] = NlpModule()
+        self.modules["language"] = LanguageModule(classifier, responses, self.modules["NLP"])
         self.modules["learning"] = LearningModule(classifier, classifications, responses)
 
         self.watchers.append("learning")
+        self.watchers.append("NLP")
 
     def load_objects(self, classifications: List[str], classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
         # initialize modules
-        self.modules["language"] = LanguageModule(classifier, responses)
+        self.modules["NLP"] = NlpModule()
+        self.modules["language"] = LanguageModule(classifier, responses, self.modules["NLP"])
         self.modules["learning"] = LearningModule(classifier, classifications, responses)
 
         # initialize watchers
