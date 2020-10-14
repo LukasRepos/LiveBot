@@ -26,7 +26,7 @@ class CognitiveFunction:
         self.watchers.append("learning")
         self.watchers.append("NLP")
 
-    def load_objects(self, classifications: List[str], classifier: TfIdf(), responses: Dict[str, Callable[[deque, str, str], str]]) -> None:
+    def load_objects(self, classifications: List[str], classifier: TfIdf(), responses: Dict[str, Callable[[Dict[str, Any]], str]]) -> None:
         # initialize modules
         self.modules["NLP"] = NlpModule()
         self.modules["language"] = LanguageModule(classifier, responses, self.modules["NLP"])
@@ -34,6 +34,7 @@ class CognitiveFunction:
 
         # initialize watchers
         self.watchers.append("learning")
+        self.watchers.append("NLP")
 
     def nlp(self, doc: str) -> str:
         for watcher in self.watchers:

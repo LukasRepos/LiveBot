@@ -7,7 +7,7 @@ from Chatty.models.tfidf import TfIdf
 
 
 # default response object for every response given
-def base_response(_, __, ___, data):
+def base_response(_: Dict[str, Any], data):
     return random.choice(data)
 
 
@@ -34,7 +34,6 @@ class LanguageModule(ChattyModule):
             return self.responses[class_]({
                 "document": doc,
                 "reference": reference,
-                "SVO": self.nlp.tree[-1],
                 "NLP": self.nlp.sents[-1]
             })
         else:

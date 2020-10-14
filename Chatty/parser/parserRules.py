@@ -4,14 +4,14 @@ import random
 from collections import deque
 from functools import partial
 from pathlib import PurePath
-from typing import Dict, List, Callable
+from typing import Dict, List, Callable, Any
 
 from Chatty.fileSystem.filesystems import access_fs
 from Chatty.parser.parser import ParserRule
 
 
 # default response object for every response given
-def response(_, __, ___, data):
+def response(_: Dict[str, Any], data):
     return random.choice(data)
 
 
