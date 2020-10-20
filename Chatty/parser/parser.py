@@ -14,7 +14,7 @@ class ParserRule:
     def get_requirements(self) -> List[str]:
         return self.requirements
 
-    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
+    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         pass
 
 
@@ -28,13 +28,17 @@ class Parser:
 
         for el in tqdm(root, desc="Loading configuration file"):
             attrs = el.keys()
+            has_found = False
+            data = []
+            for d in el:
+                data.append(d.text)
             for rule in self.rules:
                 requirements = rule.get_requirements()
-                data = []
-                for d in el:
-                    data.append(d.text)
                 if self.require(attrs, requirements):
-                    rule.process_tag(el.tag, el.attrib, data)
+                    has_found = has_found or rule.process_tag(el.tag, el.attrib, data)  # ensures that is True even if not processed
+
+            if not has_found:
+                print(f"[ERROR] Parser rule not recognized with tag: '{el.tag}' and attributes: '{el.attrib}'")
 
     def require(self, attrs: KeysView[str], requirements: List[str]) -> bool:
         if len(attrs) != len(requirements):

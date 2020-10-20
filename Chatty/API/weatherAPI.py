@@ -30,7 +30,8 @@ class Weather:
 
 
 if __name__ == "__main__":
-    weatherAPI = Weather("4365e1c18a9a72fcaa98d9e97bc3df2f")
+    secret = "4365e1c18a9a72fcaa98d9e97bc3df2f"
+    weatherAPI = Weather(secret)
     forecasts = weatherAPI.get_forecast("aveiro")
 
     pprint(forecasts)

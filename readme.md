@@ -60,7 +60,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Add weather API</td>                                            <td>DONE</td>
     </tr>
     <tr>
-        <td>Rework the Markov Chain Generator</td>                          <td>DONE/td>
+        <td>Rework the Markov Chain Generator</td>                          <td>DONE</td>
     </tr>
     <tr>
         <td>Take initiative on talking</td>                                 <td>IN RESEARCH</td>
@@ -81,13 +81,19 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Build knowledge graph from wikipedia</td>                       <td>IN RESEARCH</td>
     </tr>
     <tr>
-        <td>Improve from pattern matching to NLP matching</td>              <td>IN RESEARCH</td>
+        <td>Improve from pattern matching to NLP matching</td>              <td>DONE</td>
     </tr>
     <tr>
-        <td>Migrate to spacy</td>                                           <td>IN RESEARCH</td>
+        <td>Migrate to spacy</td>                                           <td>DONE</td>
     </tr>
     <tr>
-        <td>Add proper learning</td>                                        <td>IN RESEARCH</td>
+        <td>Add proper learning</td>                                        <td>DONE</td>
+    </tr>
+    <tr>
+        <td>Add geolocation API</td>                                        <td>IN RESEARCH</td>
+    </tr>
+    <tr>
+        <td>Add context</td>                                                <td>IN RESEARCH</td>
     </tr>
 </table>
 

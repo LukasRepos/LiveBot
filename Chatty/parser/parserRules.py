@@ -20,9 +20,11 @@ class PathRule(ParserRule):
         super().__init__(["type", "source"])
         self.configs = {}
 
-    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
+    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         if tag == "path":
             self.configs[attributes["type"]] = attributes["source"]
+            return True
+        return False
 
     def get_configs(self) -> Dict[str, str]:
         return self.configs
@@ -34,10 +36,12 @@ class InlineReponsesRule(ParserRule):
         self.responses = {}
         self.raw_responses = {}
 
-    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
+    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "responses":
             self.responses[attributes["name"]] = partial(response, data=data)
             self.raw_responses[attributes["name"]] = data
+            return True
+        return False
 
     def get_responses(self) -> Dict[str, Callable[[deque, str, str], str]]:
         return self.responses
@@ -51,9 +55,11 @@ class ExternalScriptRule(ParserRule):
         super().__init__(["type", "name", "source", "function"])
         self.responses = {}
 
-    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
+    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         if tag == "resource" and attributes["type"] == "responses":
             self.responses[attributes["name"]] = [attributes["source"], attributes["function"]]
+            return True
+        return False
 
     def get_responses(self, paths: Dict[str, str]) -> Dict[str, Callable[[deque, str, str], str]]:
         for name, [source, func] in self.responses.items():
@@ -66,13 +72,15 @@ class ExternalIntentRule(ParserRule):
         super().__init__(["type", "filetype", "source"])
         self.intents = {}
 
-    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
+    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         if tag == "resource" and attributes["type"] == "intents":
             with open(access_fs("intents").root / PurePath(attributes["source"])) as f:
                 data = json.load(f)
 
             for doc in data["docs"]:
                 self.intents[doc["classification"]] = doc["patterns"]
+            return True
+        return False
 
     def get_intents(self) -> Dict[str, str]:
         return self.intents
@@ -83,9 +91,11 @@ class InternalIntentRule(ParserRule):
         super().__init__(["type", "inline", "name"])
         self.intents = {}
 
-    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> None:
+    def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "intents":
             self.intents[attributes["name"]] = data
+            return True
+        return False
 
     def get_intents(self) -> Dict[str, List[str]]:
         return self.intents
