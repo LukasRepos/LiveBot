@@ -1,0 +1,14 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "So what do you do?",
+        "So what have you been up to?",
+        "What are you doing?"
+      ],
+      "classification": "work",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}

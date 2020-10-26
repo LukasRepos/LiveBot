@@ -1,0 +1,24 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "What is the most recent new?",
+        "What are the most recent news?",
+        "Tell me the news..."
+      ],
+      "classification": "hackernews_recent",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    },
+    {
+      "patterns": [
+        "What is the hottest new?",
+        "What are the hottest news?",
+        "Tell me hottest news!"
+      ],
+      "classification": "hackernews_hottest",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}

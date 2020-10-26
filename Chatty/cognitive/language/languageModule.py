@@ -12,25 +12,41 @@ def base_response(_: Dict[str, Any], data):
 
 
 class LanguageModule(ChattyModule):
-    def __init__(self, classifier: TfIdf, responses: Dict[str, Callable[[Dict[str, Any]], str]], nlp: NlpModule):
-        self.classifier = classifier
+    def __init__(self, responses: Dict[str, Callable[[Dict[str, Any]], str]], intents: Dict[str, Dict[str, Any]], nlp: NlpModule):
+        self.classifiers: Dict[str, TfIdf] = {}
         self.responses = responses
+        self.intents = intents
 
         self.ready_to_pass = False
         self.THRESHOLD = 0.8
         self.nlp = nlp
 
+        self.current_context = "GENERAL"
+
     def prepare(self):
-        pass
+        for class_, intent in self.intents.items():
+            if intent["context"] not in self.classifiers:
+                self.classifiers[intent["context"]] = TfIdf()
+
+            for pattern in intent["patterns"]:
+                self.classifiers[intent["context"]].submit_document(pattern, class_)
+
+        for classifier in self.classifiers.values():
+            classifier.fit()
 
     def process_nlp(self, doc):
-        classifier_results = self.classifier.classify_document(doc)
+        classifier_results = self.classifiers[self.current_context].classify_document(doc)
 
         certainty = classifier_results[0]
         class_ = classifier_results[1]
         reference = classifier_results[2]
 
         if certainty > self.THRESHOLD:
+            for classification, intent in self.intents.items():
+                if intent["context"] == self.current_context and classification == class_:
+                    self.current_context = intent["new_context"]
+                    break
+
             return self.responses[class_]({
                 "document": doc,
                 "reference": reference,

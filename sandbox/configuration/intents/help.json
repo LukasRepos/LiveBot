@@ -1,0 +1,127 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "I need your help...",
+        "I am in need of your help..."
+      ],
+      "context": "GENERAL",
+      "new_context": "HELP",
+      "classification": "help-entry"
+    },
+    {
+      "patterns": [
+        "I need psicological help...",
+        "Psicological",
+        "I am not fine..."
+      ],
+      "context": "HELP",
+      "new_context": "HELP_PSICOLOGICAL",
+      "classification": "help_psicological-entry"
+    },
+    {
+      "patterns": [
+        "Yes",
+        "Yes I am suicidal...",
+        "Kinda"
+      ],
+      "context": "HELP_PSICOLOGICAL",
+      "new_context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "classification": "help_psicological_suicidal-entry"
+    },
+    {
+      "patterns": [
+        "Can you give me an advice?",
+        "Can you give me an advice to prevent suicide?",
+        "Can you give me another advice?",
+        "Do you have another advice?"
+      ],
+      "context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "new_context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "classification": "help_psicological_suicidal-advice"
+    },
+    {
+      "patterns": [
+        "Lets talk a bit",
+        "Yes, lets talk",
+        "Ok, lets talk then...",
+        "Ok, thats a good idea, I will talk with you...",
+        "What do you want to talk next?"
+      ],
+      "context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "new_context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
+      "classification": "help_psicological_suicidal_talk-entry"
+    },
+    {
+      "patterns": [
+        "My school went horrible...",
+        "My school was horrible...",
+        "My school went really bad...",
+        "My school was bad...",
+        "My uni went horrible...",
+        "My uni was horrible...",
+        "My uni went really bad...",
+        "My uni was bad...",
+        "My university went horrible...",
+        "My university was horrible...",
+        "My university went really bad...",
+        "My university was bad..."
+      ],
+      "context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
+      "new_context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
+      "classification": "help_psicological_suicidal_talk-badSchool"
+    },
+    {
+      "patterns": [
+        "My school went nicely!",
+        "I did good at school...",
+        "My uni went nicely!",
+        "I did good at uni...",
+        "My university went nicely!",
+        "I did good at university..."
+      ],
+      "context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
+      "new_context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
+      "classification": "help_psicological_suicidal_talk-niceSchool"
+    },
+    {
+      "patterns": [
+        "I don't want to talk anymore"
+      ],
+      "context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
+      "new_context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "classification": "help_psicological_suicidal_talk-exit"
+    },
+    {
+      "patterns": [
+        "I am not suicidal anymore",
+        "Thanks for your help, I am not suicidal anymore!",
+        "Thanks"
+      ],
+      "context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "new_context": "GENERAL",
+      "classification": "help_psicological_suicidal-exit"
+    },
+    {
+      "patterns": [
+        "I am fine now, thanks!",
+        "I am stable now",
+        "i am fine..."
+      ],
+      "context": "HELP_PSICOLOGICAL",
+      "new_context": "GENERAL",
+      "classification": "help_psicological-exit"
+    },
+    {
+      "patterns": [
+        "I already fixed it!",
+        "I don't need help anymore",
+        "Thanks, but I am fine now",
+        "Thanks, but I already fixed it!"
+      ],
+      "context": "HELP",
+      "new_context": "GENERAL",
+      "classification": "help-exit"
+    }
+  ]
+}

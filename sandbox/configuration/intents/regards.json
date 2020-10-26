@@ -1,0 +1,42 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Hi",
+        "Hello",
+        "Hey",
+        "Good morning",
+        "Good afternoon",
+        "Good evening",
+        "How it's going?",
+        "Nice to see you!",
+        "It's great to see you!",
+        "Good to see you!",
+        "Yo!",
+        "What’s up?",
+        "Sup",
+        "Heyyy"
+      ],
+      "classification": "regards_greetings",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    },
+    {
+      "patterns": [
+        "Bye!",
+        "Goodbye!",
+        "See you soon!",
+        "See you next time!",
+        "I need to go...",
+        "See you next time?",
+        "Got to go",
+        "Got to go...",
+        "Ok, got to go...",
+        "see you later!"
+      ],
+      "classification": "regards_goodbyes",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}

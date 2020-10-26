@@ -14,90 +14,126 @@ def base_response(_, data):
 
 
 class LearningModule(ChattyModule):
-    def __init__(self, classifier: TfIdf, classifications: List[str], responses: Dict[str, Callable[[Dict[str, Any]], str]]):
-        self.classifications = classifications
-        self.lang_classifier = classifier
+    def __init__(self, intents: Dict[str, Dict[str, Any]], responses: Dict[str, Callable[[Dict[str, Any]], str]]):
+        self.classifications = []
+        for class_ in intents.keys():
+            self.classifications.append(class_)
+
+        self.intents = intents
         self.responses = responses
 
-        self.classifier = TfIdf()
-
-        self.classifier.submit_document("That's not right!", "learn")
-        self.classifier.submit_document("You can improve on that classification...", "learn")
-        self.classifier.submit_document("That classification is wrong!", "learn")
-
-        self.classifier.fit()
-
-        self.is_ready_to_stop = False
         self.is_first_time = False
-        self.is_training = False
-        self.is_learning_responses = False
-        self.previous_doc = ""
-        self.current_doc = ""
+        self.is_receiving_class = False
+        self.is_receiving_responses = False
+        self.is_receiving_context = False
+        self.is_receiving_new_context = False
+
+        self.is_ending = False
+        self.skip_creation = False
+        self.skip_all = False
+
         self.class_ = ""
+        self.context = ""
+        self.new_context = ""
+        self.pattern = ""
+        self.prev_doc = ""
 
         self.new_responses = []
-
-        self.THRESHOLD = 0.8
 
     def prepare(self):
-        self.is_ready_to_stop = False
         self.is_first_time = True
+        self.is_receiving_class = False
+        self.is_receiving_responses = False
+        self.is_receiving_context = False
+        self.is_receiving_new_context = False
 
-    def process_nlp(self, doc):
-        if self.is_first_time:
-            self.is_first_time = False
-            msg = "Please teach me or type ##quit to end learning!\n"
-            msg += "Choose a classification! Or create your own!\n"
-            msg += table(list(filter(lambda x: x[0].islower(), self.responses)), 3)
-            return msg
+        self.is_ending = False
+        self.skip_creation = False
+        self.skip_all = False
 
-        if self.is_learning_responses:
-            if doc == "##quit":
-                self.responses[self.class_] = functools.partial(base_response, data=self.new_responses)
-                self.is_ready_to_stop = True
-                return "This was fun!"
+        self.class_ = ""
+        self.context = ""
+        self.new_context = ""
+        self.pattern = ""
+        self.prev_doc = ""
 
-            self.new_responses.append(doc)
-            return "Nice one! Anymore? Remember, type ##quit to stop learning!"
-
-        if doc == "##quit":
-            self.is_ready_to_stop = True
-            return "Ok, thats fine"
-
-        self.class_ = doc
-        self.lang_classifier.submit_document(self.previous_doc, self.class_)
-        self.lang_classifier.fit()
-
-        if doc in self.classifications:
-            self.is_ready_to_stop = True
-        else:
-            self.is_learning_responses = True
-            return "Now what should I say? Type ##quit to end learning!"
-
-        return "Learned something new! That was exciting!"
-
-    def pass_to(self):
-        return None
-
-    def process_ended(self):
-        return self.is_ready_to_stop
-
-    def finalize(self):
-        self.is_ready_to_stop = False
-        self.is_training = False
-        self.is_first_time = False
-        self.is_learning_responses = False
-        self.previous_doc = ""
-        self.current_doc = ""
         self.new_responses = []
 
-    def watch(self, doc):
-        if not self.is_training:
-            self.previous_doc = self.current_doc
-            self.current_doc = doc
+    def process_nlp(self, doc):
+        # prints the message for the first time
+        if self.is_first_time:
+            self.pattern = doc
+            self.is_first_time = False
+            self.is_receiving_class = True
+            return table(self.classifications, 3)
 
-        classifer_results = self.classifier.classify_document(doc)
-        certainty = classifer_results[0]
+        # receives the class
+        if self.is_receiving_class:
+            if doc == "##quit":
+                self.skip_all = True
+                self.is_ending = True
+                return "Ok"
 
-        if certainty > self.THRESHOLD:
-            self.is_training = True
+            self.is_receiving_class = False
+            self.class_ = doc
+            if self.class_ not in self.classifications:
+                self.is_receiving_responses = True
+                self.is_receiving_context = True
+                self.is_receiving_new_context = True
+                return "Ok, now that I have the classification, I just some more informations... Now I need the context, if you don't know what this is, just type 'GENERAL'"
+
+            self.is_ending = True
+            self.skip_creation = True
+            return "Nice!"
+
+        # context
+        if self.is_receiving_context:
+            self.is_receiving_context = False
+            self.context = doc
+            return f"Ok the context is {self.context}, now what would be the new context? Remember, if you don't know what does this mean just type 'GENERAL'"
+
+        # new context
+        if self.is_receiving_new_context:
+            self.is_receiving_new_context = False
+            self.new_context = doc
+            if self.is_receiving_responses:
+                return f"Nice, the new context will be {self.new_context}! Now just type the responses!"
+            return f"Nice, the new context will be {self.new_context}! And we are done!"
+
+        # receives responses - ENDS PROCESS!!
+        if self.is_receiving_responses:
+            if doc == "##quit":
+                self.is_receiving_responses = False
+                self.is_ending = True
+                return "Ok those were enough!"
+
+            self.new_responses.append(doc)
+            return "Ok thats a nice one! Any more?"
+
+        self.is_ending = True
+        return "[ERROR]"
+
+    def pass_to(self):
+        pass
+
+    def process_ended(self):
+        return self.is_ending
+
+    def finalize(self):
+        if self.skip_all:
+            return
+
+        if self.skip_creation:
+            self.intents[self.class_]["patterns"].append(self.pattern)
+        else:
+            self.intents[self.class_] = {
+                "patterns": [self.pattern],
+                "context": self.context,
+                "new_context": self.new_context,
+            }
+
+            self.responses[self.class_] = functools.partial(base_response, data=self.new_responses)
+
+        self.classifications = []
+        for class_ in self.intents.keys():
+            self.classifications.append(class_)

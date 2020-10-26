@@ -1,0 +1,13 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "So you are really a computer?",
+        "Are you human?"
+      ],
+      "classification": "humanity",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}

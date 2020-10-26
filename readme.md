@@ -90,7 +90,7 @@ If the `type` is set to `scriptModule` will set the path for the `.py` files tha
         <td>Add proper learning</td>                                        <td>DONE</td>
     </tr>
     <tr>
-        <td>Add geolocation API</td>                                        <td>IN RESEARCH</td>
+        <td>Add geolocation API</td>                                        <td>DONE</td>
     </tr>
     <tr>
         <td>Add context</td>                                                <td>IN RESEARCH</td>

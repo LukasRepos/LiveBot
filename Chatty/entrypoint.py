@@ -48,10 +48,13 @@ class EntryPoint:
             responses_list = get_conn().execute_query("SELECT response, data FROM RESERVED_RESPONSES")
             self.responses = {k: pickle.loads(v) for k, v in responses_list}
 
+            intents_list = get_conn().execute_query("SELECT classification, data FROM RESERVED_INTENTS")
+            self.intents = {k: pickle.loads(v) for k, v in intents_list}
+
             self.classifier = TfIdf()
             self.classifier.load()
 
-            self.cogito.load_serialized(list(set(self.classifier.df["__class"])), self.classifier, self.responses)
+            self.cogito.load(self.intents, self.classifier, self.responses)
         else:
             # initialize rules
             path_rule = PathRule()
@@ -88,44 +91,29 @@ class EntryPoint:
 
             # creates internal tables
             connection = get_conn()
-            connection.execute_query("CREATE TABLE RESERVED_RESPONSES ("
+            connection.execute_query("CREATE TABLE RESERVED_RAW_RESPONSES ("
                                      "      response string,"
                                      "      data string"
                                      ")")
-            connection.execute_query("CREATE TABLE RESERVED_RAW_RESPONSES ("
+            connection.execute_query("CREATE TABLE RESERVED_RAW_INTENTS ("
+                                     "      classification string,"
+                                     "      data string"
+                                     ")")
+            connection.execute_query("CREATE TABLE RESERVED_RESPONSES ("
                                      "      response string,"
                                      "      data string"
                                      ")")
             connection.execute_query("CREATE TABLE RESERVED_INTENTS ("
                                      "      classification string,"
-                                     "      pattern string"
-                                     ")")
-            connection.execute_query("CREATE TABLE RESERVED_RAW_INTENTS ("
-                                     "      classification string,"
-                                     "      pattern string"
+                                     "      data string"
                                      ")")
 
             # prime the classifier
             self.classifier = TfIdf()
-            for classification, patterns in tqdm(self.intents.items(), desc="Loading classifier"):
-                for pattern in patterns:
+            for classification, intent in tqdm(self.intents.items(), desc="Loading classifier"):
+                for pattern in intent["patterns"]:
                     self.classifier.submit_document(pattern, classification)
             self.classifier.fit()
-
-            # extract the parsed intents and classifications
-            self.intents = {}
-            for c, p in zip(self.classifier.df["__class"], self.classifier.df.index.values):
-                if c in self.intents:
-                    self.intents[c].append(p)
-                else:
-                    self.intents[c] = [p]
-
-            # packs and saves the raw intents
-            for k, data in tqdm(self.intents.items(), desc="Saving first load data"):
-                for d in data:
-                    get_conn().execute_query("INSERT INTO "
-                                             "RESERVED_RAW_INTENTS(classification, pattern) "
-                                             "VALUES(?, ?)", k, d)
 
             # packs and saves the raw responses
             for k, data in tqdm(self.raw_responses.items(), desc="Saving first load data"):
@@ -134,7 +122,13 @@ class EntryPoint:
                                              "RESERVED_RAW_RESPONSES(response, data) "
                                              "VALUES(?, ?)", k, d)
 
-            self.cogito.load_objects(list(set(self.intents.keys())), self.classifier, self.responses)
+            # packs and saves the raw responses
+            for k, v in self.intents.items():
+                get_conn().execute_query("INSERT INTO "
+                                         "RESERVED_RAW_INTENTS(classification, data) "
+                                         "VALUES(?, ?)", k, pickle.dumps(v))
+
+            self.cogito.load(self.intents, self.classifier, self.responses)
 
     def process_nlp(self, text: str) -> str:
         return self.cogito.nlp(text)
@@ -147,6 +141,11 @@ class EntryPoint:
         for k, v in self.responses.items():
             get_conn().execute_query("INSERT INTO "
                                      "RESERVED_RESPONSES(response, data) "
+                                     "VALUES(?, ?)", k, pickle.dumps(v))
+
+        for k, v in self.intents.items():
+            get_conn().execute_query("INSERT INTO "
+                                     "RESERVED_INTENTS(classification, data) "
                                      "VALUES(?, ?)", k, pickle.dumps(v))
 
         # closes the connection with the db

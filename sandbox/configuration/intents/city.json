@@ -1,0 +1,12 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Can you give the city information for"
+      ],
+      "classification": "city_information",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}

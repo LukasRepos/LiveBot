@@ -17,24 +17,16 @@ class CognitiveFunction:
         self.module_stack = Stack()
         self.module_stack.push("language")
 
-    def load_serialized(self, classifications, classifier: TfIdf(), responses: Dict[str, Callable[[Dict[str, Any]], str]]) -> None:
+    def load(self, intents, classifier: TfIdf(), responses: Dict[str, Callable[[Dict[str, Any]], str]]) -> None:
         # initialize modules
         self.modules["NLP"] = NlpModule()
-        self.modules["language"] = LanguageModule(classifier, responses, self.modules["NLP"])
-        self.modules["learning"] = LearningModule(classifier, classifications, responses)
-
-        self.watchers.append("learning")
-        self.watchers.append("NLP")
-
-    def load_objects(self, classifications: List[str], classifier: TfIdf(), responses: Dict[str, Callable[[Dict[str, Any]], str]]) -> None:
-        # initialize modules
-        self.modules["NLP"] = NlpModule()
-        self.modules["language"] = LanguageModule(classifier, responses, self.modules["NLP"])
-        self.modules["learning"] = LearningModule(classifier, classifications, responses)
+        self.modules["language"] = LanguageModule(responses, intents, self.modules["NLP"])
+        self.modules["learning"] = LearningModule(intents, responses)
 
         # initialize watchers
-        self.watchers.append("learning")
         self.watchers.append("NLP")
+
+        self.modules[self.module_stack.peek()].prepare()
 
     def nlp(self, doc: str) -> str:
         for watcher in self.watchers:
@@ -46,15 +38,13 @@ class CognitiveFunction:
         if module.process_ended():
             module.finalize()
             self.module_stack.pop()
+            self.modules[self.module_stack.peek()].prepare()
 
         if next_module := module.pass_to():
             self.modules[next_module].prepare()
             response = self.modules[next_module].process_nlp(doc)
-
             self.module_stack.push(next_module)
 
-            if self.modules[next_module].process_ended():
-                self.modules[next_module].finalize()
-                self.module_stack.pop()
+            return response
 
         return response

@@ -78,7 +78,11 @@ class ExternalIntentRule(ParserRule):
                 data = json.load(f)
 
             for doc in data["docs"]:
-                self.intents[doc["classification"]] = doc["patterns"]
+                self.intents[doc["classification"]] = {
+                    "patterns": doc["patterns"],
+                    "new_context": doc["new_context"],
+                    "context": doc["context"]
+                }
             return True
         return False
 
@@ -88,12 +92,16 @@ class ExternalIntentRule(ParserRule):
 
 class InternalIntentRule(ParserRule):
     def __init__(self):
-        super().__init__(["type", "inline", "name"])
+        super().__init__(["type", "inline", "name", "context", "new_context"])
         self.intents = {}
 
     def process_tag(self, tag: str, attributes: Dict[str, str], data: List[str]) -> bool:
         if tag == "resource" and attributes["inline"] == "TRUE" and attributes["type"] == "intents":
-            self.intents[attributes["name"]] = data
+            self.intents[attributes["name"]] = {
+                "patterns": data,
+                "new_context": attributes["new_context"],
+                "context": attributes["context"]
+            }
             return True
         return False
 

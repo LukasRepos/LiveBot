@@ -1,0 +1,15 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "What is your name?",
+        "What's your name?",
+        "What can I call you?",
+        "How can I call you?"
+      ],
+      "classification": "name",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}

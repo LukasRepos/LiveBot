@@ -1,5 +1,6 @@
 import pickle
 import sqlite3 as sqlite
+from pprint import pprint
 
 import pandas as pd
 
@@ -33,11 +34,15 @@ for km, vm in modified_intents.items():
 
 cursor.execute("SELECT response, data FROM RESERVED_RESPONSES")
 response_list = cursor.fetchall()
-responses = {k: pickle.loads(v) for k, v in response_list if k in diff.keys()}
+# responses = {k: pickle.loads(v) for k, v in response_list if k in diff.keys()}
 
-print(diff.keys())
-print(diff)
-print(responses)
+cursor.execute("SELECT classification, data FROM RESERVED_INTENTS")
+intents_list = cursor.fetchall()
+intents = {k: pickle.loads(v) for k, v in intents_list if k in diff.keys()}
+
+pprint(diff.keys())
+pprint(diff)
+pprint(intents)
 
 cursor.close()
 conn.close()

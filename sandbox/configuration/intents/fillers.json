@@ -1,0 +1,17 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Ok",
+        "Alright",
+        "Nice",
+        "Ok nice...",
+        "Yes",
+        "No"
+      ],
+      "classification": "fillers",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}
