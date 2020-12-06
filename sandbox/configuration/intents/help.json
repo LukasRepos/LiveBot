@@ -11,13 +11,13 @@
     },
     {
       "patterns": [
-        "I need psicological help...",
-        "Psicological",
+        "I need psychological help...",
+        "Psychological",
         "I am not fine..."
       ],
       "context": "HELP",
-      "new_context": "HELP_PSICOLOGICAL",
-      "classification": "help_psicological-entry"
+      "new_context": "HELP_PSYCHOLOGICAL",
+      "classification": "help_psychological-entry"
     },
     {
       "patterns": [
@@ -25,32 +25,33 @@
         "Yes I am suicidal...",
         "Kinda"
       ],
-      "context": "HELP_PSICOLOGICAL",
-      "new_context": "HELP_PSICOLOGICAL_SUICIDAL",
-      "classification": "help_psicological_suicidal-entry"
+      "context": "HELP_PSYCHOLOGICAL",
+      "new_context": "HELP_PSYCHOLOGICAL_SUICIDAL",
+      "classification": "help_psychological_suicidal-entry"
     },
     {
       "patterns": [
         "Can you give me an advice?",
         "Can you give me an advice to prevent suicide?",
         "Can you give me another advice?",
-        "Do you have another advice?"
+        "Do you have another advice?",
+        "No"
       ],
-      "context": "HELP_PSICOLOGICAL_SUICIDAL",
-      "new_context": "HELP_PSICOLOGICAL_SUICIDAL",
-      "classification": "help_psicological_suicidal-advice"
+      "context": "HELP_PSYCHOLOGICAL_SUICIDAL",
+      "new_context": "HELP_PSYCHOLOGICAL_SUICIDAL",
+      "classification": "help_psychological_suicidal-advice"
     },
     {
       "patterns": [
         "Lets talk a bit",
         "Yes, lets talk",
         "Ok, lets talk then...",
-        "Ok, thats a good idea, I will talk with you...",
+        "Ok, that's a good idea, I will talk with you...",
         "What do you want to talk next?"
       ],
-      "context": "HELP_PSICOLOGICAL_SUICIDAL",
-      "new_context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
-      "classification": "help_psicological_suicidal_talk-entry"
+      "context": "HELP_PSYCHOLOGICAL_SUICIDAL",
+      "new_context": "HELP_PSYCHOLOGICAL_SUICIDAL_TALK",
+      "classification": "help_psychological_suicidal_talk-entry"
     },
     {
       "patterns": [
@@ -67,9 +68,9 @@
         "My university went really bad...",
         "My university was bad..."
       ],
-      "context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
-      "new_context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
-      "classification": "help_psicological_suicidal_talk-badSchool"
+      "context": "HELP_PSYCHOLOGICAL_SUICIDAL_TALK",
+      "new_context": "HELP_PSYCHOLOGICAL_SUICIDAL_TALK",
+      "classification": "help_psychological_suicidal_talk-badSchool"
     },
     {
       "patterns": [
@@ -80,17 +81,17 @@
         "My university went nicely!",
         "I did good at university..."
       ],
-      "context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
-      "new_context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
-      "classification": "help_psicological_suicidal_talk-niceSchool"
+      "context": "HELP_PSYCHOLOGICAL_SUICIDAL_TALK",
+      "new_context": "HELP_PSYCHOLOGICAL_SUICIDAL_TALK",
+      "classification": "help_psychological_suicidal_talk-niceSchool"
     },
     {
       "patterns": [
         "I don't want to talk anymore"
       ],
-      "context": "HELP_PSICOLOGICAL_SUICIDAL_TALK",
-      "new_context": "HELP_PSICOLOGICAL_SUICIDAL",
-      "classification": "help_psicological_suicidal_talk-exit"
+      "context": "HELP_PSYCHOLOGICAL_SUICIDAL_TALK",
+      "new_context": "HELP_PSYCHOLOGICAL_SUICIDAL",
+      "classification": "help_psychological_suicidal_talk-exit"
     },
     {
       "patterns": [
@@ -98,9 +99,9 @@
         "Thanks for your help, I am not suicidal anymore!",
         "Thanks"
       ],
-      "context": "HELP_PSICOLOGICAL_SUICIDAL",
+      "context": "HELP_PSYCHOLOGICAL_SUICIDAL",
       "new_context": "GENERAL",
-      "classification": "help_psicological_suicidal-exit"
+      "classification": "help_psychological_suicidal-exit"
     },
     {
       "patterns": [
@@ -108,9 +109,9 @@
         "I am stable now",
         "i am fine..."
       ],
-      "context": "HELP_PSICOLOGICAL",
+      "context": "HELP_PSYCHOLOGICAL",
       "new_context": "GENERAL",
-      "classification": "help_psicological-exit"
+      "classification": "help_psychological-exit"
     },
     {
       "patterns": [

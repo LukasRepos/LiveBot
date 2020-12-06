@@ -7,6 +7,14 @@
       "classification": "city_information",
       "context": "GENERAL",
       "new_context": "GENERAL"
+    },
+    {
+      "patterns": [
+        "Can you give country information for"
+      ],
+      "classification": "country_information",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
     }
   ]
 }

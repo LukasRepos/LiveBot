@@ -1,9 +1,7 @@
 import datetime
 import json
-import string
 from math import inf
 from typing import Dict, Any
-from spacy.displacy import serve
 
 from Chatty.API.weatherAPI import Weather
 

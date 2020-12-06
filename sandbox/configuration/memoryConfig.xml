@@ -53,50 +53,50 @@
 
     <resource type="intents" filetype="json" source="./help.json" />
     <resource inline="TRUE" type="responses" name="help-entry">
-        <data>Do you need psicological help?</data>
-        <data>What kind of help you need? Psicological?</data>
+        <data>Do you need psychological help?</data>
+        <data>What kind of help you need? Psychological?</data>
     </resource>
     <resource inline="TRUE" type="responses" name="help-exit">
         <data>Nice!</data>
         <data>Glad to know that you fixed your problem!</data>
         <data>The best kind of problems are those who are solved!</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological-entry">
+    <resource inline="TRUE" type="responses" name="help_psychological-entry">
         <data>Are you suicidal right now?</data>
         <data>Are you feeling suicidal right now?</data>
         <data>This is a hard question, but are you thinking about death?</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal-entry">
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal-entry">
         <data>Keep away from everything that can hurt you...</data>
         <data>Can you talk with some friend?</data>
         <data>Try to call someone...</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal-advice">
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal-advice">
         <data>Keep away from everything that can hurt you...</data>
         <data>Can you talk with some friend?</data>
         <data>Try to call someone...</data>
         <data>Just keep talking with me... Don't leave me alone...</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal_talk-entry">
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal_talk-entry">
         <data>How went your school or university?</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal_talk-niceSchool">
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal_talk-niceSchool">
         <data>Nice! See? You do good things!</data>
         <data>See? You do good things!</data>
         <data>See? You can do good things!</data>
-        <data>See? You have so much potencial!</data>
+        <data>See? You have so much potential!</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal_talk-badSchool">
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal_talk-badSchool">
         <data>Oh, sorry for asking...</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal_talk-exit">
-        <data>Ok thats fine...</data>
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal_talk-exit">
+        <data>Ok that's fine...</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological_suicidal-exit">
+    <resource inline="TRUE" type="responses" name="help_psychological_suicidal-exit">
         <data>Glad to see that you are not suicidal anymore!</data>
         <data>Next time, don't push yourself that hard...</data>
     </resource>
-    <resource inline="TRUE" type="responses" name="help_psicological-exit">
+    <resource inline="TRUE" type="responses" name="help_psychological-exit">
         <data>Glad to see that you are better!</data>
         <data>Nice that you are better!</data>
         <data>Nice! Remember, you are not measure by your faults, but your feats!</data>
@@ -121,8 +121,9 @@
 
 
 
-    <resource type="intents" filetype="json" source="./city.json" />
-    <resource type="responses" name="city_information" source=".city" function="city_info" />
+    <resource type="intents" filetype="json" source="./places.json" />
+    <resource type="responses" name="city_information" source=".places" function="city_info" />
+    <resource type="responses" name="country_information" source=".places" function="country_info" />
 
     <resource type="intents" filetype="json" source="./time.json" />
     <resource type="responses" name="time" source=".hour" function="response" />
@@ -131,12 +132,12 @@
     <resource type="responses" name="wikipedia_generator" source=".wikigen" function="response" />
 
     <resource type="intents" filetype="json" source="./calendar.json" />
-    <resource type="responses" name="calendar_add_tomorrow" source=".calendar" function="add_tomorrow" />
-    <resource type="responses" name="calendar_add_date" source=".calendar" function="add_date" />
-    <resource type="responses" name="calendar_get_tomorrow" source=".calendar" function="get_tomorrow" />
-    <resource type="responses" name="calendar_get_date" source=".calendar" function="get_date" />
-    <resource type="responses" name="calendar_add_weekday" source=".calendar" function="add_recurrent" />
-    <resource type="responses" name="calendar_get_weekday" source=".calendar" function="get_recurrent" />
+    <resource type="responses" name="calendar_add_tomorrow" source=".cal" function="add_tomorrow" />
+    <resource type="responses" name="calendar_add_date" source=".cal" function="add_date" />
+    <resource type="responses" name="calendar_get_tomorrow" source=".cal" function="get_tomorrow" />
+    <resource type="responses" name="calendar_get_date" source=".cal" function="get_date" />
+    <resource type="responses" name="calendar_add_weekday" source=".cal" function="add_recurrent" />
+    <resource type="responses" name="calendar_get_weekday" source=".cal" function="get_recurrent" />
 
     <resource type="intents" filetype="json" source="./hackernews.json" />
     <resource type="responses" name="hackernews_recent" source=".news" function="most_recent" />
