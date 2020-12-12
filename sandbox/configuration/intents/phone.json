@@ -1,0 +1,15 @@
+{
+  "docs": [
+    {
+      "patterns": [
+        "Can you give basic information for the number",
+        "Can you give basic information for the number",
+        "Give basic information for the number",
+        "Give basic information for the number"
+      ],
+      "classification": "phone_get_basic_info",
+      "context": "GENERAL",
+      "new_context": "GENERAL"
+    }
+  ]
+}
