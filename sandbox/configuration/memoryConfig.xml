@@ -148,4 +148,9 @@
 
     <resource type="intents" filetype="json" source="./phone.json" />
     <resource type="responses" name="phone_get_basic_info" source=".phoneNumber" function="phone_number_simple_info" />
+
+    <resource type="intents" filetype="json" source="./knowledge.json" />
+    <resource type="responses" name="knowledge_wolframalpha" source=".knowledge" function="search_in_wolframalpha" />
+    <resource type="responses" name="knowledge_wikipedia" source=".knowledge" function="search_in_wikipedia" />
+    <resource type="responses" name="knowledge_global_search" source=".knowledge" function="search_all" />
 </root>

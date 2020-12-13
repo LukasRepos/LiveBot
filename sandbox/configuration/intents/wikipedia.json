@@ -3,13 +3,7 @@
     {
       "patterns": [
         "Generate information about",
-        "Generate info about",
-        "Search about",
-        "Search for",
-        "Find information about",
-        "Find info about",
-        "Gather information about",
-        "Gather info about"
+        "Generate info about"
       ],
       "classification": "wikipedia_generator",
       "context": "GENERAL",

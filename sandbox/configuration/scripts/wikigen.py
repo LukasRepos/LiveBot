@@ -9,7 +9,6 @@ from Chatty.cognitive.language.text_generation import Markov, chain_exists, get_
 
 def response(data: Dict[str, Any]) -> str:
     subject = data["NLP"].ents[-1].text
-    print(subject)
 
     if not chain_exists(subject):
         markov = Markov(order=30)
@@ -26,7 +25,7 @@ def response(data: Dict[str, Any]) -> str:
             return markov.generate(choice([k for k in markov.chain.keys() if not k[0].islower()]), iterations=1500)
         except Exception as e:
             print(e)
-            return "Unknow error );"
+            return "Unknow error ;("
     else:
         markov = get_chain(subject)
         msg = markov.generate(choice([k for k in markov.chain.keys() if not k[0].islower()]), iterations=1500)
